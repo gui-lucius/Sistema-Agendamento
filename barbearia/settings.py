@@ -7,9 +7,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'chave-de-desenvolvimento')
 
-DEBUG = os.getenv('DJANGO_DEVELOPMENT', 'False') == 'True'
+DEBUG = True
 
-ALLOWED_HOSTS = ["barbearia-rd.com.br", "www.barbearia-rd.com.br", "barbearia-rd-a3b518df45e1.herokuapp.com"]
+ALLOWED_HOSTS = [
+    "barbearia-rd.com.br",
+    "www.barbearia-rd.com.br",
+    "barbearia-rd-a3b518df45e1.herokuapp.com",
+    "127.0.0.1"
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,8 +61,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'barbearia.wsgi.application'
 
+# --- BANCO DE DADOS ---
 DATABASES = {}
-
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
@@ -68,6 +73,7 @@ else:
         'NAME': BASE_DIR / "db.sqlite3",
     }
 
+# --- VALIDAÇÃO DE SENHA ---
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -75,21 +81,25 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# --- LOCALIZAÇÃO ---
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = False
 
+# --- ARQUIVOS ESTÁTICOS ---
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# --- CORS ---
 CORS_ALLOWED_ORIGINS = [
     "https://www.barbearia-rd.com.br",
     "https://barbearia-rd.com.br"
 ]
 
+# --- E-MAIL ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -98,6 +108,7 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 EMAIL_FAIL_SILENTLY = True
 
+# --- JWT ---
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -111,6 +122,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
+# --- HTTPS EM PRODUÇÃO ---
 if DEBUG:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
@@ -118,3 +130,11 @@ if DEBUG:
     SECURE_HSTS_SECONDS = 0
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_HSTS_PRELOAD = False
+
+# =======================================
+# 🌟 VARIÁVEIS DE PERSONALIZAÇÃO DO SISTEMA
+# =======================================
+
+NOME_NEGOCIO = os.getenv('NOME_NEGOCIO', 'Barbearia RD')
+EMAIL_REMETENTE = os.getenv('EMAIL_REMETENTE', 'denisbarbeariard@gmail.com')
+EMAIL_DESTINO = os.getenv('EMAIL_DESTINO', 'denisbarbeariard@gmail.com')

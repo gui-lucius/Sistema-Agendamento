@@ -1,67 +1,69 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  {% load static %}
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A Barbearia RD oferece cortes de cabelo, design de barba, descoloração e mais. Agende já seu horário conosco!">
-  <meta name="author" content="Barbearia RD">
-  <link rel="icon" type="image/x-icon" href="{% static 'imagens/favicon.ico' %}">
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A Barbearia RD oferece cortes de cabelo, design de barba, descoloração e mais. Agende já seu horário conosco!" />
+  <meta name="author" content="Barbearia RD" />
+  <link rel="icon" type="image/x-icon" href="{% static 'imagens/favicon.ico' %}" />
+  
   <title>Barbearia RD</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Estilos principais -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
+  <!-- Ícones (Font Awesome) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 <body>
+
+  <!-- Cabeçalho -->
   <header class="header">
     <div class="container header-content">
-      <img src="{% static 'imagens/logo.png' %}" alt="Logo da Barbearia" class="logo">
-      
-      <div class="header-buttons">
-        <a href="https://maps.app.goo.gl/VoDQMjCG7vgZorPX7" target="_blank" class="btn-header">
+      <img src="{% static 'imagens/logo.png' %}" alt="Logo da Barbearia" class="logo" />
+
+      <div class="header-right">
+        <a href="https://maps.app.goo.gl/VoDQMjCG7vgZorPX7" target="_blank" class="btn-location">
           📍 Nos encontramos aqui
         </a>
-        <a href="{% url 'calendario' %}" class="btn-header">
+        <a href="{% url 'agendamentos:calendario' %}" class="btn-whatsapp">
           ✂️ Agende seu horário
         </a>
-        <a href="https://wa.me/5548998082832" class="btn-header">
+        <a href="https://wa.me/5548998082832" class="btn-whatsapp">
           💬 Fale conosco no WhatsApp
         </a>
       </div>
-    
     </div>
   </header>
 
+  <!-- Serviços -->
   <section class="services">
     <div class="container">
       <h2>Nossos Serviços</h2>
       <div class="service-items">
         <div class="service-item">
-          <img src="{% static 'imagens/cortes.jpg' %}" alt="Cortes">
+          <img src="{% static 'imagens/cortes.jpg' %}" alt="Cortes" />
           <h3>Cortes</h3>
           <p>Social, Degradê, Navalhado.</p>
         </div>
-
         <div class="service-item">
-          <img src="{% static 'imagens/sobrancelha.jpeg' %}" alt="Sobrancelha">
+          <img src="{% static 'imagens/sobrancelha.jpeg' %}" alt="Sobrancelha" />
           <h3>Sobrancelha</h3>
           <p>Design e modelagem profissional.</p>
         </div>
-
         <div class="service-item">
-          <img src="{% static 'imagens/pigmentação.jpeg' %}" alt="Pigmentação">
+          <img src="{% static 'imagens/pigmentação.jpeg' %}" alt="Pigmentação" />
           <h3>Pigmentação</h3>
           <p>Cobertura de cabelos brancos ou mudança de cor.</p>
         </div>
-
         <div class="service-item">
-          <img src="{% static 'imagens/barba.jpeg' %}" alt="Barba">
+          <img src="{% static 'imagens/barba.jpeg' %}" alt="Barba" />
           <h3>Barba</h3>
           <p>Tratamento e design exclusivo para sua barba.</p>
         </div>
-
         <div class="service-item">
-          <img src="{% static 'imagens/nevou.jpg' %}" alt="Descoloração">
+          <img src="{% static 'imagens/nevou.jpg' %}" alt="Descoloração" />
           <h3>Descoloração</h3>
           <p>Transformação completa para um visual único.</p>
         </div>
@@ -69,6 +71,7 @@
     </div>
   </section>
 
+  <!-- Sobre Nós -->
   <section class="about">
     <div class="container">
       <h2>Sobre Nós</h2>
@@ -76,6 +79,7 @@
     </div>
   </section>
 
+  <!-- Preços -->
   <section class="pricing">
     <div class="container">
       <h2>Preços de Alguns de Nossos Serviços</h2>
@@ -92,16 +96,18 @@
     </div>
   </section>
 
+  <!-- Rodapé -->
   <footer class="footer">
     <div class="container">
       <p>📍 Rua João Francisco Barcelos Júnior, 214 (Dentro do CTG)</p>
       <p>⏰ Seg-Sáb: 9h - 20h</p>
       <div class="social-links">
-        <a href="https://www.instagram.com/barbearia.rd7?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+        <a href="https://www.instagram.com/barbearia.rd7" target="_blank">
           <i class="fab fa-instagram"></i> Instagram
         </a>
-      </div>      
+      </div>
     </div>
   </footer>
+
 </body>
 </html>
