@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -41,13 +41,15 @@ def notificar_barbeiro(nome_cliente, data_horario):
             f"para {data_horario.strftime('%d/%m/%Y %H:%M')}.\n\n"
             f"Acesse o painel administrativo para aceitar ou recusar."
         )
-        send_mail(
-            assunto,
-            mensagem,
-            settings.EMAIL_REMETENTE,
-            [settings.EMAIL_DESTINO],
-            fail_silently=False
+
+        email = EmailMessage(
+            subject=assunto,
+            body=mensagem,
+            from_email='Sistema de Agendamento <sistemadeagenda5@gmail.com>',
+            to=[settings.EMAIL_DESTINO],
         )
+        email.send(fail_silently=False)
+
     except Exception as e:
         print(f"[ERRO EMAIL] Falha ao notificar barbeiro: {e}")
 
