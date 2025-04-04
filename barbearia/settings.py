@@ -106,7 +106,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sistemadeagenda5@gmail.com'               # ✅ e-mail do sistema
 EMAIL_HOST_PASSWORD = 'jmmzllnvtesorcyv'                     # ✅ senha de app sem espaço
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 'Sistema de Agendamento <sistemadeagenda5@gmail.com>'
 EMAIL_FAIL_SILENTLY = False                                  # Em produção, pode trocar pra True se preferir
 
 # --- JWT ---
