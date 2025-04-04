@@ -4,34 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const calendarEl = document.getElementById('calendar');
   const modal = document.getElementById("reservaModal");
   const loading = document.getElementById("loading");
-  let accessToken = "";
   let selectedDate = "";
-
-  async function fetchToken() {
-    try {
-      loading.style.display = "flex";
-      const response = await fetch('/api/token/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: 'Barbearia_RD',
-          password: 'Denis_RD2025',
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        accessToken = data.access;
-        console.log('🔑 Token obtido:', accessToken);
-      } else {
-        mostrarMensagemGlobal("Erro ao obter o token.", "erro");
-      }
-    } catch (error) {
-      mostrarMensagemGlobal("Erro de conexão com o servidor.", "erro");
-    } finally {
-      loading.style.display = "none";
-    }
-  }
 
   function mostrarMensagemGlobal(texto, tipo) {
     const mensagemGlobal = document.getElementById("mensagem-global");
@@ -43,8 +16,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       mensagemGlobal.style.display = "none";
     }, 4000);
   }
-
-  await fetchToken();
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'timeGridWeek',
@@ -82,10 +53,14 @@ document.addEventListener('DOMContentLoaded', async function () {
       try {
         loading.style.display = "flex";
         const responseAgendamentos = await fetch('/api/horarios/', {
-          headers: { "Authorization": `Bearer ${accessToken}` }
+          headers: {
+            "Authorization": `Bearer ${ACCESS_TOKEN}`
+          }
         });
         const responseBloqueios = await fetch('/api/bloqueios/', {
-          headers: { "Authorization": `Bearer ${accessToken}` }
+          headers: {
+            "Authorization": `Bearer ${ACCESS_TOKEN}`
+          }
         });
 
         if (responseAgendamentos.ok && responseBloqueios.ok) {
@@ -182,7 +157,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
+          "Authorization": `Bearer ${ACCESS_TOKEN}`
         },
         body: JSON.stringify(dados)
       });
