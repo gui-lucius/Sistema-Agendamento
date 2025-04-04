@@ -81,29 +81,35 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# --- LOCALIZAÇÃO E FUSO ---
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
+# --- ESTÁTICOS ---
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# --- CORS ---
 CORS_ALLOWED_ORIGINS = [
     "https://www.barbearia-rd.com.br",
     "https://barbearia-rd.com.br"
 ]
 
+# --- CONFIG. DE E-MAIL (sistema) ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-EMAIL_FAIL_SILENTLY = True
+EMAIL_HOST_USER = 'sistemadeagenda5@gmail.com'               # ✅ e-mail do sistema
+EMAIL_HOST_PASSWORD = 'jmmzllnvtesorcyv'                     # ✅ senha de app sem espaço
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_FAIL_SILENTLY = False                                  # Em produção, pode trocar pra True se preferir
 
+# --- JWT ---
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -117,6 +123,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
+# --- SEGURANÇA (em DEV pode desativar algumas proteções) ---
 if DEBUG:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
@@ -125,6 +132,7 @@ if DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_HSTS_PRELOAD = False
 
+# --- PERSONALIZAÇÕES DO PROJETO ---
 NOME_NEGOCIO = os.getenv('NOME_NEGOCIO', 'Barbearia RD')
-EMAIL_REMETENTE = os.getenv('EMAIL_REMETENTE', 'denisbarbeariard@gmail.com')
-EMAIL_DESTINO = os.getenv('EMAIL_DESTINO', 'denisbarbeariard@gmail.com')
+EMAIL_REMETENTE = EMAIL_HOST_USER                              # ✅ remetente para envio de e-mail
+EMAIL_DESTINO = 'guisantosschutz2@gmail.com'                   # ✅ para onde vai o aviso do barbeiro

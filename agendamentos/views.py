@@ -33,18 +33,23 @@ def calendario_com_token(request):
         return JsonResponse({"erro": "Usuário Barbearia_RD não encontrado."}, status=500)
 
 
-def notificar_agendamento(nome_cliente, data_horario):
+def notificar_barbeiro(nome_cliente, data_horario):
     try:
+        assunto = "Novo Agendamento Pendente"
+        mensagem = (
+            f"Você tem uma nova solicitação de agendamento de {nome_cliente} "
+            f"para {data_horario.strftime('%d/%m/%Y %H:%M')}.\n\n"
+            f"Acesse o painel administrativo para aceitar ou recusar."
+        )
         send_mail(
-            'Novo Agendamento Pendente',
-            f"Você tem uma nova solicitação de agendamento de {nome_cliente} no horário {data_horario}.\n\n"
-            "Por favor, verifique o painel administrativo.",
+            assunto,
+            mensagem,
             settings.EMAIL_REMETENTE,
             [settings.EMAIL_DESTINO],
             fail_silently=False
         )
     except Exception as e:
-        print(f"[ERRO EMAIL] Não foi possível enviar notificação: {e}")
+        print(f"[ERRO EMAIL] Falha ao notificar barbeiro: {e}")
 
 
 @api_view(['POST'])
@@ -85,7 +90,7 @@ def criar_agendamento(request):
             status='pendente'
         )
 
-        notificar_agendamento(nome, data)
+        notificar_barbeiro(nome, data)
 
         return JsonResponse({'mensagem': 'Agendamento criado com sucesso!', 'id': agendamento.id}, status=201)
 
