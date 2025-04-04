@@ -19,3 +19,7 @@ class AgendamentoAdmin(admin.ModelAdmin):
     date_hierarchy = 'data_horario_reserva'
     ordering = ('-data_horario_reserva',)
     list_per_page = 25
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        obj.processar_status()

@@ -70,6 +70,14 @@ def criar_agendamento(request):
         except ValueError:
             return JsonResponse({'erro': 'Data/Horário inválido.'}, status=400)
 
+        # 🚫 VALIDA SE JÁ EXISTE AGENDAMENTO NESSE HORÁRIO
+        if Agendamento.objects.filter(data_horario_reserva=data, status__in=['pendente', 'aceito']).exists():
+            return JsonResponse({'erro': 'Este horário já está ocupado.'}, status=409)
+
+        # 🚫 VALIDA SE HORÁRIO ESTÁ BLOQUEADO
+        if HorarioBloqueado.objects.filter(data_horario=data).exists():
+            return JsonResponse({'erro': 'Este horário está indisponível.'}, status=403)
+
         agendamento = Agendamento.objects.create(
             nome_cliente=nome,
             email_cliente=email,

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const modal = document.getElementById("reservaModal");
   const loading = document.getElementById("loading");
   let selectedDate = "";
+  let eventosIndisponiveis = [];
 
   function mostrarMensagemGlobal(texto, tipo) {
     const mensagemGlobal = document.getElementById("mensagem-global");
@@ -43,6 +44,14 @@ document.addEventListener('DOMContentLoaded', async function () {
       { daysOfWeek: [0, 1, 2, 3, 4, 5, 6], startTime: '09:00', endTime: '21:00' }
     ],
     select(info) {
+      const horarioSelecionado = new Date(info.startStr).toISOString();
+      const existe = eventosIndisponiveis.includes(horarioSelecionado);
+
+      if (existe) {
+        mostrarMensagemGlobal("Este horário já está ocupado ou bloqueado!", "erro");
+        return;
+      }
+
       selectedDate = info.startStr;
       abrirModal(selectedDate);
     },
@@ -67,8 +76,12 @@ document.addEventListener('DOMContentLoaded', async function () {
           const dataAgendamentos = await responseAgendamentos.json();
           const dataBloqueios = await responseBloqueios.json();
 
+          eventosIndisponiveis = [];
+
           const eventsAgendamentos = dataAgendamentos.map(horario => {
             const start = new Date(horario.data_horario_reserva);
+            eventosIndisponiveis.push(start.toISOString());
+
             const end = new Date(start.getTime() + 60 * 60 * 1000);
             const backgroundColor = horario.status === 'pendente' ? '#ffc107' : '#28a745';
             const title = horario.status === 'pendente' ? 'Aguardando Confirmação' : 'Horário Confirmado';
@@ -80,12 +93,14 @@ document.addEventListener('DOMContentLoaded', async function () {
               allDay: false,
               backgroundColor,
               borderColor: backgroundColor,
-              clickable: horario.disponivel
+              clickable: false
             };
           });
 
           const eventsBloqueios = dataBloqueios.map(bloqueio => {
             const start = new Date(bloqueio.data_horario);
+            eventosIndisponiveis.push(start.toISOString());
+
             return {
               title: "Indisponível",
               start: start.toISOString(),
@@ -120,6 +135,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   function abrirModal(startStr) {
     if (startStr) selectedDate = startStr;
     modal.style.display = "flex";
+    modal.classList.add("ativo"); // ✅ adiciona fade-in
+    document.getElementById("nome").focus();
   }
 
   async function submitForm() {
@@ -130,6 +147,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
+    const btn = document.getElementById("btnReservar");
+
     if (!nome || !email) {
       mostrarMensagemGlobal("Preencha todos os campos!", "erro");
       return;
@@ -153,6 +172,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     try {
       loading.style.display = "flex";
+      btn.disabled = true;
+      btn.textContent = "Enviando...";
+
       const response = await fetch("/api/agendamentos/", {
         method: "POST",
         headers: {
@@ -168,19 +190,24 @@ document.addEventListener('DOMContentLoaded', async function () {
         mostrarMensagemGlobal(`Erro ao enviar a reserva: ${responseData?.message || "Erro desconhecido"}`, "erro");
       } else {
         mostrarMensagemGlobal("Reserva enviada com sucesso!", "sucesso");
-        modal.style.display = "none";
+        fecharModal();
         calendar.refetchEvents();
       }
     } catch (error) {
       mostrarMensagemGlobal("Erro de conexão com o servidor.", "erro");
     } finally {
       loading.style.display = "none";
+      btn.disabled = false;
+      btn.textContent = "Reservar";
     }
   }
 
-  document.getElementById("cancelarModal").onclick = function () {
+  function fecharModal() {
     modal.style.display = "none";
-  };
+    modal.classList.remove("ativo"); // ✅ remove classe de animação
+  }
+
+  document.getElementById("cancelarModal").onclick = fecharModal;
 
   modal.addEventListener("click", function (event) {
     if (event.target === modal) {

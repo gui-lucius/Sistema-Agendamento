@@ -1,13 +1,12 @@
 from django.db import models
 from django.core.mail import send_mail
 from django.utils.timezone import make_aware, localtime
-from django.core.exceptions import ValidationError
-from django.conf import settings  
+from django.conf import settings
 
 
 class HorarioBloqueado(models.Model):
     data_horario = models.DateTimeField(unique=True)
-    motivo = models.CharField(max_length=255, blank=True, null=True) 
+    motivo = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         data_horario_com_tz = make_aware(self.data_horario) if self.data_horario.tzinfo is None else self.data_horario
@@ -34,19 +33,24 @@ class Agendamento(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        if self.pk:
-            old_status = Agendamento.objects.get(pk=self.pk).status
-            if old_status != self.status:
-                if self.status == "recusado":
-                    self.delete()
-                    return
-                self.enviar_email()
+        # Save "normal", sem lógica adicional
         super().save(*args, **kwargs)
+
+    def processar_status(self):
+        """
+        Chamado após alterar o status manualmente.
+        Se recusado, deleta o agendamento.
+        Se aceito, envia e-mail.
+        """
+        if self.status == "recusado":
+            self.delete()
+        elif self.status == "aceito":
+            self.enviar_email()
 
     def enviar_email(self):
         if self.email_cliente:
-            nome_negocio = getattr(settings, "NOME_NEGOCIO", None)
-            email_remetente = getattr(settings, "EMAIL_REMETENTE", None)
+            nome_negocio = getattr(settings, "NOME_NEGOCIO", 'Sua Barbearia')
+            email_remetente = getattr(settings, "EMAIL_REMETENTE", '')
 
             if self.status == "aceito":
                 assunto = f"✅ Agendamento Confirmado - {nome_negocio}"

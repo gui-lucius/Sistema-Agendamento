@@ -20,36 +20,36 @@
 <body>
 
   <div class="btn-container">
-    <a href="{% url 'agendamentos:home' %}" class="btn-back">Voltar à Página Inicial</a>
+    <a href="{% url 'agendamentos:home' %}" class="btn-back" aria-label="Voltar à Página Inicial">Voltar à Página Inicial</a>
   </div>
 
-  <div id="mensagem-global"></div>
+  <div id="mensagem-global" role="alert" aria-live="assertive"></div>
 
   <h1 class="titulo-calendario">Calendário de Reservas</h1>
-  <div id="calendar"></div>
+  <div id="calendar" aria-label="Calendário de horários disponíveis"></div>
 
   <!-- Modal -->
-  <div id="reservaModal">
+  <div id="reservaModal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
     <div>
-      <h3>Agendar Horário</h3>
-      <div id="mensagem" class="mensagem-modal"></div>
+      <h3 id="modalTitulo">Agendar Horário</h3>
+      <div id="mensagem" class="mensagem-modal" role="alert" aria-live="polite"></div>
       <form id="reservaForm">
         <label for="nome">Seu Nome:</label>
-        <input type="text" id="nome" name="nome" required>
+        <input type="text" id="nome" name="nome" required aria-required="true" aria-label="Nome completo" autocomplete="name">
 
         <label for="email">Seu E-mail:</label>
-        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
+        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required aria-required="true" aria-label="Endereço de e-mail" autocomplete="email">
 
         <div class="modal-buttons">
-          <button type="button" id="btnReservar">Reservar</button>
-          <button type="button" id="cancelarModal">Cancelar</button>
+          <button type="submit" id="btnReservar" aria-label="Enviar reserva">Reservar</button>
+          <button type="button" id="cancelarModal" aria-label="Cancelar reserva e fechar modal">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Loading -->
-  <div id="loading">
+  <div id="loading" role="status" aria-live="assertive" aria-label="Carregando">
     <div class="spinner"></div>
     <p>Aguarde, processando...</p>
   </div>
