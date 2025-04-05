@@ -38,7 +38,7 @@ body {
 }
 
 .logo {
-    height: 150px; /* 🟢 tamanho novo padrão no desktop */
+    height: 150px; 
     object-fit: contain;
     max-width: 100%;
     width: auto;

@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Escolha um Barbeiro</title>
+    <link rel="stylesheet" href="{% static 'css/barbeiros.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Escolha seu Barbeiro</h1>
+        <div class="barbeiros-grid">
+            {% for barbeiro in barbeiros %}
+                <a href="{% url 'agendamentos:calendario_barbeiro' barbeiro.id %}" class="barbeiro-card">
+                    {% if barbeiro.foto %}
+                        <img src="{{ barbeiro.foto.url }}" alt="Foto de {{ barbeiro.nome }}">
+                    {% else %}
+                        <img src="{% static 'imagens/default-user.png' %}" alt="Foto padrão">
+                    {% endif %}
+                    <h2>{{ barbeiro.nome }}</h2>
+                </a>
+            {% empty %}
+                <p>Nenhum barbeiro cadastrado no momento.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
