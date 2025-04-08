@@ -13,7 +13,8 @@ ALLOWED_HOSTS = [
     "barbearia-rd.com.br",
     "www.barbearia-rd.com.br",
     "barbearia-rd-a3b518df45e1.herokuapp.com",
-    "127.0.0.1"
+    "127.0.0.1",
+    "192.168.15.3"
 ]
 
 INSTALLED_APPS = [
@@ -61,7 +62,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'barbearia.wsgi.application'
 
-# --- BANCO DE DADOS ---
 DATABASES = {}
 DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -73,7 +73,6 @@ else:
         'NAME': BASE_DIR / "db.sqlite3",
     }
 
-# --- VALIDAÇÃO DE SENHA ---
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -81,33 +80,32 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# --- LOCALIZAÇÃO E FUSO ---
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# --- ESTÁTICOS ---
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# --- CORS ---
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 CORS_ALLOWED_ORIGINS = [
     "https://www.barbearia-rd.com.br",
     "https://barbearia-rd.com.br"
 ]
 
-# --- CONFIG. DE E-MAIL (sistema) ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sistemadeagenda5@gmail.com'               # ✅ e-mail do sistema
-EMAIL_HOST_PASSWORD = 'jmmzllnvtesorcyv'                     # ✅ senha de app sem espaço
+EMAIL_HOST_USER = 'sistemadeagenda5@gmail.com'
+EMAIL_HOST_PASSWORD = 'jmmzllnvtesorcyv'
 DEFAULT_FROM_EMAIL = 'Sistema de Agendamento <sistemadeagenda5@gmail.com>'
-EMAIL_FAIL_SILENTLY = False                                  # Em produção, pode trocar pra True se preferir
+EMAIL_FAIL_SILENTLY = False
 
 # --- JWT ---
 REST_FRAMEWORK = {
@@ -123,7 +121,6 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-# --- SEGURANÇA (em DEV pode desativar algumas proteções) ---
 if DEBUG:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
@@ -132,7 +129,8 @@ if DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_HSTS_PRELOAD = False
 
-# --- PERSONALIZAÇÕES DO PROJETO ---
 NOME_NEGOCIO = os.getenv('NOME_NEGOCIO', 'Barbearia RD')
-EMAIL_REMETENTE = EMAIL_HOST_USER                              # ✅ remetente para envio de e-mail
-EMAIL_DESTINO = 'guisantosschutz2@gmail.com'                   # ✅ para onde vai o aviso do barbeiro
+EMAIL_REMETENTE = EMAIL_HOST_USER
+EMAIL_DESTINO = 'guisantosschutz2@gmail.com'
+
+DOMINIO_SITE = os.getenv('DOMINIO_SITE', 'http://127.0.0.1:8000')  

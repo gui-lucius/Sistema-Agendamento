@@ -13,7 +13,6 @@ from rest_framework_simplejwt.views import (
 def health_check(request):
     return JsonResponse({"status": "ok"}, status=200)
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -32,3 +31,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

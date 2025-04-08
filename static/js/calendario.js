@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', async function () {
-  console.log("🛠️ Rodando JS LOCAL atualizado");
+  console.log("🛠️ Rodando JS atualizado com etapas");
 
   const calendarEl = document.getElementById('calendar');
+  const barbeiroId = calendarEl.dataset.barbeiroId;
   const modal = document.getElementById("reservaModal");
   const loading = document.getElementById("loading");
   let selectedDate = "";
@@ -12,7 +13,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     mensagemGlobal.textContent = texto;
     mensagemGlobal.className = tipo === "sucesso" ? "sucesso" : "erro";
     mensagemGlobal.style.display = "block";
-
     setTimeout(() => {
       mensagemGlobal.style.display = "none";
     }, 4000);
@@ -46,46 +46,47 @@ document.addEventListener('DOMContentLoaded', async function () {
     select(info) {
       const horarioSelecionado = new Date(info.startStr).toISOString();
       const existe = eventosIndisponiveis.includes(horarioSelecionado);
-
       if (existe) {
         mostrarMensagemGlobal("Este horário já está ocupado ou bloqueado!", "erro");
         return;
       }
-
       selectedDate = info.startStr;
       abrirModal(selectedDate);
     },
     eventClick(info) {
-      return false;
+      const status = info.event.extendedProps.status;
+
+      if (status === 'bloqueado') {
+        alert("⛔ Este horário está bloqueado pelo barbeiro.");
+      } else if (status === 'pendente') {
+        alert("⏳ Este horário já foi solicitado e está aguardando confirmação.");
+      } else if (status === 'aceito') {
+        alert("✅ Este horário já está reservado. Por favor, escolha outro horário.");
+      } else {
+        alert("ℹ️ Evento sem status definido.");
+      }
     },
     events: async function (fetchInfo, successCallback, failureCallback) {
       try {
         loading.style.display = "flex";
-        const responseAgendamentos = await fetch('/api/horarios/', {
-          headers: {
-            "Authorization": `Bearer ${ACCESS_TOKEN}`
-          }
+        const responseAgendamentos = await fetch(`/api/horarios/${barbeiroId}/`, {
+          headers: { "Authorization": `Bearer ${ACCESS_TOKEN}` }
         });
-        const responseBloqueios = await fetch('/api/bloqueios/', {
-          headers: {
-            "Authorization": `Bearer ${ACCESS_TOKEN}`
-          }
+        const responseBloqueios = await fetch(`/api/bloqueios/${barbeiroId}/`, {
+          headers: { "Authorization": `Bearer ${ACCESS_TOKEN}` }
         });
 
         if (responseAgendamentos.ok && responseBloqueios.ok) {
           const dataAgendamentos = await responseAgendamentos.json();
           const dataBloqueios = await responseBloqueios.json();
-
           eventosIndisponiveis = [];
 
           const eventsAgendamentos = dataAgendamentos.map(horario => {
             const start = new Date(horario.data_horario_reserva);
             eventosIndisponiveis.push(start.toISOString());
-
             const end = new Date(start.getTime() + 60 * 60 * 1000);
             const backgroundColor = horario.status === 'pendente' ? '#ffc107' : '#28a745';
             const title = horario.status === 'pendente' ? 'Aguardando Confirmação' : 'Horário Confirmado';
-
             return {
               title,
               start: start.toISOString(),
@@ -93,14 +94,15 @@ document.addEventListener('DOMContentLoaded', async function () {
               allDay: false,
               backgroundColor,
               borderColor: backgroundColor,
-              clickable: false
+              extendedProps: {
+                status: horario.status
+              }
             };
           });
 
           const eventsBloqueios = dataBloqueios.map(bloqueio => {
             const start = new Date(bloqueio.data_horario);
             eventosIndisponiveis.push(start.toISOString());
-
             return {
               title: "Indisponível",
               start: start.toISOString(),
@@ -108,7 +110,9 @@ document.addEventListener('DOMContentLoaded', async function () {
               backgroundColor: "#FF4D4D",
               borderColor: "#FF0000",
               textColor: "FFFFFF",
-              clickable: false
+              extendedProps: {
+                status: 'bloqueado'
+              }
             };
           });
 
@@ -125,18 +129,27 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   });
 
-  document.getElementById("btnReservar").addEventListener("click", function (event) {
-    event.preventDefault();
-    submitForm();
-  });
-
   calendar.render();
 
   function abrirModal(startStr) {
     if (startStr) selectedDate = startStr;
     modal.style.display = "flex";
-    modal.classList.add("ativo"); // ✅ adiciona fade-in
+    modal.classList.add("ativo");
+    mostrarProximoStep(1);
     document.getElementById("nome").focus();
+  }
+
+  function fecharModal() {
+    modal.style.display = "none";
+    modal.classList.remove("ativo");
+  }
+
+  function mostrarProximoStep(n) {
+    const totalSteps = 3;
+    for (let i = 1; i <= totalSteps; i++) {
+      const step = document.getElementById(`step-${i}`);
+      if (step) step.style.display = (i === n) ? "block" : "none";
+    }
   }
 
   async function submitForm() {
@@ -147,9 +160,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
+    const servico = document.getElementById("servico").value;
+    const lembrete = parseInt(document.getElementById("lembrete_minutos").value);
     const btn = document.getElementById("btnReservar");
 
-    if (!nome || !email) {
+    if (!nome || !email || !servico || !lembrete) {
       mostrarMensagemGlobal("Preencha todos os campos!", "erro");
       return;
     }
@@ -167,7 +182,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     const dados = {
       nome_cliente: nome,
       email_cliente: email,
-      data_horario_reserva: selectedDate
+      data_horario_reserva: selectedDate,
+      barbeiro_id: barbeiroId,
+      servico: servico,
+      lembrete_minutos: lembrete
     };
 
     try {
@@ -202,10 +220,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   }
 
-  function fecharModal() {
-    modal.style.display = "none";
-    modal.classList.remove("ativo"); // ✅ remove classe de animação
-  }
+  document.getElementById("btnReservar").addEventListener("click", function (event) {
+    event.preventDefault();
+    submitForm();
+  });
 
   document.getElementById("cancelarModal").onclick = fecharModal;
 

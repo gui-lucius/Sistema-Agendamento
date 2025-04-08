@@ -8,14 +8,12 @@
   <title>Calendário de Reservas</title>
   <link rel="icon" type="image/x-icon" href="{% static 'imagens/favicon.ico' %}">
 
-  <!-- FullCalendar CSS e JS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales/pt-br.js"></script>
 
-  <!-- Estilos personalizados -->
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <link rel="stylesheet" href="{% static 'css/calendario.css' %}">
+  <link rel="stylesheet" href="{% static 'css/calendario.css' %}?v=100">
 </head>
 <body>
 
@@ -26,40 +24,74 @@
   <div id="mensagem-global" role="alert" aria-live="assertive"></div>
 
   <h1 class="titulo-calendario">Calendário de Reservas</h1>
-  <div id="calendar" aria-label="Calendário de horários disponíveis"></div>
 
-  <!-- Modal -->
-  <div id="reservaModal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
-    <div>
+  <div id="calendar" data-barbeiro-id="{{ barbeiro.id }}" aria-label="Calendário de horários disponíveis"></div>
+
+  <div id="reservaModal" role="dialog" aria-modal="true" class="multi-step-modal">
+    <div class="modal-content">
       <h3 id="modalTitulo">Agendar Horário</h3>
-      <div id="mensagem" class="mensagem-modal" role="alert" aria-live="polite"></div>
-      <form id="reservaForm">
+
+      <div class="modal-step" id="step-1">
         <label for="nome">Seu Nome:</label>
-        <input type="text" id="nome" name="nome" required aria-required="true" aria-label="Nome completo" autocomplete="name">
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
 
         <label for="email">Seu E-mail:</label>
-        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required aria-required="true" aria-label="Endereço de e-mail" autocomplete="email">
+        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
 
-        <div class="modal-buttons">
-          <button type="submit" id="btnReservar" aria-label="Enviar reserva">Reservar</button>
-          <button type="button" id="cancelarModal" aria-label="Cancelar reserva e fechar modal">Cancelar</button>
-        </div>
-      </form>
+        <button type="button" class="btn-proximo" onclick="mostrarProximoStep(2)">Próximo</button>
+      </div>
+
+      <div class="modal-step" id="step-2" style="display:none;">
+        <label>Escolha o Serviço:</label>
+        <select id="servico" required>
+          <option value="">Selecione um serviço</option>
+          <option value="Corte - R$35">Corte - R$35</option>
+          <option value="Corte + Barba - R$60">Corte + Barba - R$60</option>
+          <option value="Descoloração - R$150">Descoloração - R$150</option>
+          <option value="Pigmentação - R$60">Pigmentação - R$60</option>
+          <option value="Plano Mensal - R$100">Plano Mensal - R$100</option>
+        </select>
+
+        <button type="button" onclick="mostrarProximoStep(3)">Próximo</button>
+        <button type="button" onclick="mostrarProximoStep(1)">Voltar</button>
+      </div>
+
+      <div class="modal-step" id="step-3" style="display:none;">
+        <label>Quando deseja ser lembrado?</label>
+        <select id="lembrete_minutos" required>
+          <option value="60">1 hora antes</option>
+          <option value="30">30 minutos antes</option>
+          <option value="20">20 minutos antes</option>
+          <option value="15">15 minutos antes</option>
+        </select>
+
+        <button type="submit" id="btnReservar" aria-label="Confirmar reserva">Reservar</button>
+        <button type="button" onclick="mostrarProximoStep(2)">Voltar</button>
+      </div>
+
+      <button id="cancelarModal" class="btn-cancelar">Cancelar</button>
     </div>
   </div>
 
-  <!-- Loading -->
   <div id="loading" role="status" aria-live="assertive" aria-label="Carregando">
     <div class="spinner"></div>
     <p>Aguarde, processando...</p>
   </div>
 
-  <!-- 🔐 Injetar token no JS -->
   <script>
     const ACCESS_TOKEN = "{{ access_token }}";
   </script>
 
-  <!-- JavaScript do Calendário -->
-  <script src="{% static 'js/calendario.js' %}"></script>
+  <script src="{% static 'js/calendario.js' %}?v=10"></script>
+
+  <script>
+    function mostrarProximoStep(n) {
+      const totalSteps = 3;
+      for (let i = 1; i <= totalSteps; i++) {
+        document.getElementById(`step-${i}`).style.display = (i === n) ? "block" : "none";
+      }
+    }
+  </script>
+
 </body>
 </html>

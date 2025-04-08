@@ -4,11 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Escolha um Barbeiro</title>
-    <link rel="stylesheet" href="{% static 'css/barbeiros.css' %}">
+    <link rel="stylesheet" href="{% static 'css/barbeiros.css' %}?v=4">
+
 </head>
 <body>
     <div class="container">
+        <a href="{% url 'agendamentos:home' %}" class="voltar-btn">⬅ Voltar para o início</a>
+
         <h1>Escolha seu Barbeiro</h1>
+        <p class="subtitulo">Clique no barbeiro desejado para ver os horários disponíveis</p>
+
         <div class="barbeiros-grid">
             {% for barbeiro in barbeiros %}
                 <a href="{% url 'agendamentos:calendario_barbeiro' barbeiro.id %}" class="barbeiro-card">
@@ -17,7 +22,7 @@
                     {% else %}
                         <img src="{% static 'imagens/default-user.png' %}" alt="Foto padrão">
                     {% endif %}
-                    <h2>{{ barbeiro.nome }}</h2>
+                    <h2>{{ barbeiro.nome|title }}</h2>
                 </a>
             {% empty %}
                 <p>Nenhum barbeiro cadastrado no momento.</p>

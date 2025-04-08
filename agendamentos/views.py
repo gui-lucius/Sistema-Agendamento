@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -10,27 +10,26 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from dateutil import parser
 from datetime import timedelta
-from django.utils.timezone import make_naive, is_aware
-from .models import Agendamento, HorarioBloqueado, Barbeiro
+from django.utils.timezone import make_aware, is_naive, localtime
+from django.views.decorators.csrf import csrf_exempt
+from uuid import UUID
 
+from .models import Agendamento, HorarioBloqueado, Barbeiro
 
 def home(request):
     return render(request, 'index.html')
 
-
-# NOVA VIEW: Lista todos os barbeiros
 def listar_barbeiros(request):
     barbeiros = Barbeiro.objects.all()
     return render(request, 'barbeiros.html', {'barbeiros': barbeiros})
 
-
-# MODIFICADA: Agora aceita o ID do barbeiro e mostra o calendário só dele
 def calendario_com_token(request, barbeiro_id):
     barbeiro = get_object_or_404(Barbeiro, id=barbeiro_id)
     try:
         user = barbeiro.usuario
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
+
         context = {
             "access_token": access_token,
             "barbeiro": barbeiro
@@ -39,9 +38,7 @@ def calendario_com_token(request, barbeiro_id):
     except Exception as e:
         return JsonResponse({"erro": f"Erro ao gerar token: {str(e)}"}, status=500)
 
-
-# ✅ ATUALIZADA: envia para o e-mail do barbeiro específico
-def notificar_barbeiro(nome_cliente, data_horario, barbeiro):
+def notificar_barbeiro(nome_cliente, data_horario, barbeiro, servico=None):
     try:
         nome_barbearia = getattr(settings, "NOME_NEGOCIO", "Sua Barbearia")
 
@@ -49,8 +46,14 @@ def notificar_barbeiro(nome_cliente, data_horario, barbeiro):
         mensagem = (
             f"Olá {barbeiro.nome},\n\n"
             f"Você recebeu um novo pedido de agendamento de *{nome_cliente}* "
-            f"para o dia *{data_horario.strftime('%d/%m/%Y')}* às *{data_horario.strftime('%H:%M')}*.\n\n"
-            "Acesse seu painel de agendamentos para aceitar ou recusar o horário.\n\n"
+            f"para o dia *{data_horario.strftime('%d/%m/%Y')}* às *{data_horario.strftime('%H:%M')}*.\n"
+        )
+
+        if servico:
+            mensagem += f"\n💈 Serviço solicitado: {servico}\n"
+
+        mensagem += (
+            "\nAcesse seu painel de agendamentos para aceitar ou recusar o horário.\n\n"
             f"Atenciosamente,\n{nome_barbearia}"
         )
 
@@ -64,8 +67,6 @@ def notificar_barbeiro(nome_cliente, data_horario, barbeiro):
     except Exception as e:
         print(f"[ERRO EMAIL] Falha ao notificar barbeiro: {e}")
 
-
-
 @api_view(['POST'])
 def criar_agendamento(request):
     try:
@@ -74,6 +75,8 @@ def criar_agendamento(request):
         email = dados.get('email_cliente')
         data = dados.get('data_horario_reserva')
         barbeiro_id = dados.get('barbeiro_id')
+        servico = dados.get('servico')
+        lembrete_minutos = dados.get('lembrete_minutos', 60)
 
         if not all([nome, email, data, barbeiro_id]):
             return JsonResponse({'erro': 'Todos os campos são obrigatórios.'}, status=400)
@@ -85,9 +88,9 @@ def criar_agendamento(request):
 
         try:
             data = parser.parse(data)
-            if is_aware(data):
-                data = make_naive(data)
-        except ValueError:
+            if is_naive(data):
+                data = make_aware(data)
+        except Exception:
             return JsonResponse({'erro': 'Data/Horário inválido.'}, status=400)
 
         barbeiro = get_object_or_404(Barbeiro, id=barbeiro_id)
@@ -110,18 +113,18 @@ def criar_agendamento(request):
             email_cliente=email,
             data_horario_reserva=data,
             status='pendente',
-            barbeiro=barbeiro
+            barbeiro=barbeiro,
+            servico=servico,
+            lembrete_minutos=lembrete_minutos
         )
 
-        # ✅ Agora com o e-mail do barbeiro correto
-        notificar_barbeiro(nome, data, barbeiro)
+        notificar_barbeiro(nome, data, barbeiro, servico)
 
         return JsonResponse({'mensagem': 'Agendamento criado com sucesso!', 'id': agendamento.id}, status=201)
 
     except Exception as e:
         print(f"[ERRO GERAL] Falha ao criar agendamento: {e}")
         return JsonResponse({'erro': 'Erro inesperado ao criar agendamento.'}, status=500)
-
 
 @api_view(['GET'])
 def horarios_ocupados(request, barbeiro_id):
@@ -136,7 +139,6 @@ def horarios_ocupados(request, barbeiro_id):
         print(f"[ERRO] Falha ao buscar horários ocupados: {e}")
         return Response({'erro': 'Erro ao buscar horários ocupados.'}, status=500)
 
-
 @api_view(['GET'])
 def horarios_bloqueados(request, barbeiro_id):
     try:
@@ -146,3 +148,68 @@ def horarios_bloqueados(request, barbeiro_id):
     except Exception as e:
         print(f"[ERRO] Falha ao buscar bloqueios: {e}")
         return Response({'erro': 'Erro ao buscar bloqueios.'}, status=500)
+
+def api_horarios(request, barbeiro_id):
+    try:
+        agendamentos = Agendamento.objects.filter(
+            barbeiro_id=barbeiro_id,
+            status__in=['pendente', 'aceito']
+        ).values('id', 'data_horario_reserva', 'status')
+        return JsonResponse(list(agendamentos), safe=False)
+    except Exception as e:
+        print(f"[ERRO] Falha ao buscar horários (API): {e}")
+        return JsonResponse({'erro': 'Erro ao buscar horários.'}, status=500)
+
+def api_bloqueios(request, barbeiro_id):
+    try:
+        bloqueios = HorarioBloqueado.objects.filter(
+            barbeiro_id=barbeiro_id
+        ).values('id', 'data_horario', 'motivo')
+        return JsonResponse(list(bloqueios), safe=False)
+    except Exception as e:
+        print(f"[ERRO] Falha ao buscar bloqueios (API): {e}")
+        return JsonResponse({'erro': 'Erro ao buscar bloqueios.'}, status=500)
+
+@csrf_exempt
+def cancelar_agendamento(request, agendamento_id, token):
+    try:
+        token_uuid = UUID(str(token))
+    except ValueError:
+        return render(request, 'cancelamento_invalido.html')
+
+    agendamento = Agendamento.objects.filter(id=agendamento_id, cancel_token=token_uuid).first()
+
+    if not agendamento:
+        return render(request, 'cancelamento_invalido.html')
+
+    if request.method == 'POST':
+        cliente = agendamento.nome_cliente
+        horario_local = localtime(agendamento.data_horario_reserva)
+        horario = horario_local.strftime('%d/%m/%Y %H:%M')
+
+        barbeiro = agendamento.barbeiro
+        barbeiro_email = barbeiro.email if barbeiro else None
+
+        agendamento.delete()
+
+        if barbeiro_email:
+            assunto = f"❌ Agendamento cancelado - Cliente: {cliente}"
+            mensagem = (
+                f"Olá {barbeiro.nome},\n\n"
+                f"O cliente *{cliente}* cancelou o horário agendado para {horario}.\n\n"
+                "Esse horário agora está livre no sistema."
+            )
+
+            send_mail(
+                assunto,
+                mensagem,
+                settings.EMAIL_REMETENTE,
+                [barbeiro_email],
+                fail_silently=False
+            )
+
+        return render(request, 'cancelamento_confirmado.html')
+
+    return render(request, 'confirmar_cancelamento.html', {
+        'agendamento': agendamento
+    })
