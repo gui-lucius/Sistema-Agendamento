@@ -7,3 +7,6 @@ __pycache__/
 
 # Ignorar arquivos de cache do Django
 db.sqlite3
+
+# Ignore banco de dados duplicado
+barbearia/db.sqlite3

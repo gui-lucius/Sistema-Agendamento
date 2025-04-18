@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Senha Alterada - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="login-box">
+    <h2>✅ Senha redefinida com sucesso!</h2>
+    <p>Sua nova senha foi salva. Agora você pode fazer login normalmente.</p>
+
+    <a href="{% url 'agendamentos:login' %}">
+      <button>Ir para o Login</button>
+    </a>
+
+    <p class="voltar-home">
+      ⬅️ <a href="{% url 'agendamentos:home' %}">Voltar para a página inicial</a>
+    </p>
+  </div>
+{% endblock %}

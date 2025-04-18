@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Início - Barbearia RD{% endblock %}
+
+
+
+{% block content %}
+  <section class="services">
+    <div class="container">
+      <h2>Nossos Serviços</h2>
+      <div class="service-items">
+        <div class="service-item">
+          <img src="{% static 'imagens/cortes.jpg' %}" alt="Corte de cabelo" loading="lazy" />
+          <h3>Cortes</h3>
+          <p>Social, Degradê, Navalhado.</p>
+        </div>
+        <div class="service-item">
+          <img src="{% static 'imagens/sobrancelha.jpeg' %}" alt="Sobrancelha" loading="lazy" />
+          <h3>Sobrancelha</h3>
+          <p>Design e modelagem profissional.</p>
+        </div>
+        <div class="service-item">
+          <img src="{% static 'imagens/pigmentação.jpeg' %}" alt="Pigmentação" loading="lazy" />
+          <h3>Pigmentação</h3>
+          <p>Cobertura de cabelos brancos ou mudança de cor.</p>
+        </div>
+        <div class="service-item">
+          <img src="{% static 'imagens/barba.jpeg' %}" alt="Barba" loading="lazy" />
+          <h3>Barba</h3>
+          <p>Tratamento e design exclusivo para sua barba.</p>
+        </div>
+        <div class="service-item">
+          <img src="{% static 'imagens/nevou.jpg' %}" alt="Descoloração" loading="lazy" />
+          <h3>Descoloração</h3>
+          <p>Transformação completa para um visual único.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="container">
+      <h2>Sobre Nós</h2>
+      <p>
+        Na Barbearia RD, oferecemos um ambiente acolhedor, profissionais experientes e serviços personalizados para valorizar seu estilo.
+        Nosso objetivo é garantir a satisfação e o bem-estar de cada cliente.
+      </p>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <h2>Preços de Alguns de Nossos Serviços</h2>
+      <ul class="price-list">
+        <li><span class="service-name">Cortes</span> <span class="price">R$ 35</span></li>
+        <li><span class="service-name">Barba</span> <span class="price">R$ 30</span></li>
+        <li><span class="service-name">Descoloração</span> <span class="price">R$ 150</span></li>
+        <li><span class="service-name">Luzes</span> <span class="price">R$ 130</span></li>
+        <li><span class="service-name">Sobrancelha</span> <span class="price">R$ 10</span></li>
+        <li><span class="service-name">Pigmentação</span> <span class="price">R$ 60</span></li>
+        <li><span class="service-name">Plano Mensal (4 Cortes)</span> <span class="price">R$ 100</span></li>
+        <li><span class="service-name">Plano Mensal (4 Cortes e Barba)</span> <span class="price">R$ 180</span></li>
+      </ul>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,112 @@
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem; /* ✅ padding lateral no mobile */
+  box-sizing: border-box;
+}
+
+/* Garante um espaçamento mais gentil no mobile */
+main {
+  padding: 0 0 2rem;
+  background-color: var(--background-color);
+}
+
+/* HEADER */
+.header {
+  background: var(--background-color);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--accent-color);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo {
+  height: auto;
+  max-height: 100px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Botões e links do topo */
+.header-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+/* FOOTER */
+.footer {
+  background: var(--background-color);
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: 40px; /* ✅ separa do que vier acima (ex: calendário) */
+  border-top: 1px solid var(--accent-color);
+}
+
+.footer p {
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+  margin-bottom: 0.5rem;
+}
+
+.footer .social-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer .social-links a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent-color);
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  gap: 0.5rem;
+}
+
+.footer .social-links a:hover {
+  color: #e09f00;
+}
+
+.divider-top,
+.divider-bottom {
+  height: 2px;
+  width: 100%;
+  background-color: var(--accent-color);
+}
+
+/* RESPONSIVO 💡 */
+@media (max-width: 600px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    max-height: 80px;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-right {
+    justify-content: center;
+  }
+
+  .footer p {
+    font-size: 0.8rem;
+  }
+
+  .footer .social-links a {
+    font-size: 0.9rem;
+  }
+}

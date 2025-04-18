@@ -1,0 +1,278 @@
+/* 🎯 Estilização do título do calendário */
+h1.titulo-calendario {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #d4a300;
+  margin: 30px auto 20px;
+}
+
+/* 🔲 Container do calendário */
+#calendar {
+  max-width: 1100px;
+  margin: 0 auto 40px; /* 👈 já tinha isso, tá certo */
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid #d4a300;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #333;
+  font-size: 1rem;
+}
+
+/* Garantir espaçamento extra no mobile */
+@media (max-width: 600px) {
+  #calendar {
+    padding: 15px;
+    margin-bottom: 60px; /* 👈 respiro extra no mobile */
+  }
+}
+
+/* ✅ Respiro do footer */
+.footer {
+  margin-top: 40px; /* 👈 evita colar com o calendário */
+}
+
+/* 🎛️ Toolbar do calendário */
+.fc-toolbar {
+  background: #fff;
+  color: #d4a300;
+  padding: 10px 0;
+  border-bottom: 2px solid #d4a300;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fc-toolbar-title {
+  color: #d4a300;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.fc-button {
+  background-color: #d4a300;
+  color: #fff;
+  border: 1px solid #d4a300;
+  font-weight: bold;
+  padding: 6px 14px;
+  border-radius: 4px;
+  transition: 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.fc-button:hover {
+  background-color: #c29200;
+  color: #fff;
+}
+
+/* 📅 Cabeçalho dos dias */
+.fc-col-header-cell-cushion {
+  color: #d4a300 !important;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+
+/* 🕒 Coluna de horários */
+.fc-timegrid-slot-label {
+  font-weight: bold;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+/* 🔔 Eventos */
+.fc-event-title {
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  font-size: 0.9rem;
+}
+
+.fc-event {
+  font-weight: bold;
+  font-size: 0.9em;
+  border: none;
+}
+
+.fc-event-pendente {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.fc-event-confirmado {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.fc-event-bloqueado {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* ✅ Foco nos elementos acessíveis */
+input:focus,
+select:focus,
+button:focus,
+a:focus,
+.fc-button:focus {
+  outline: 2px solid #d4a300;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(212, 163, 0, 0.4);
+}
+
+/* 📱 Responsivo para dispositivos móveis */
+@media (max-width: 600px) {
+  .fc-toolbar {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .fc-button {
+    font-size: 0.85rem;
+  }
+
+  .fc-timegrid-slot-label {
+    font-size: 1rem;
+  }
+
+  .fc-col-header-cell-cushion {
+    font-size: 1rem;
+  }
+}
+
+/* 🧾 Modal de Agendamento */
+.multi-step-modal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  color: #333;
+  padding: 30px 25px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease;
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: #d4a300;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.modal-step {
+  display: block;
+}
+
+.modal-step label {
+  display: block;
+  margin-bottom: 8px;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-step input,
+.modal-step select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #d4a300;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #333;
+  background: #f5f5f5;
+  transition: border 0.3s ease;
+}
+
+.modal-step input::placeholder,
+.modal-step select:invalid {
+  color: #aaa;
+}
+
+.modal-step input:focus,
+.modal-step select:focus {
+  border-color: #c29200;
+  outline: none;
+}
+
+/* Botões */
+.modal-step button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-proximo,
+#btnReservar {
+  background-color: #d4a300;
+  color: #000;
+}
+
+.btn-proximo:hover,
+#btnReservar:hover {
+  background-color: #c29200;
+  color: #fff;
+}
+
+.btn-cancelar {
+  background-color: #f44336;
+  color: white;
+  margin-top: 15px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.btn-cancelar:hover {
+  background-color: #c62828;
+}
+
+/* Animação */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Modal responsivo */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .btn-proximo,
+  #btnReservar,
+  .btn-cancelar {
+    width: 100%;
+    margin: 10px 0;
+  }
+}

@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Minha Conta - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="painel-container">
+  <h2>👤 Minha Conta</h2>
+
+  <div class="user-info">
+    <p><strong>Nome:</strong> {{ user.first_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Usuário:</strong> {{ user.username }}</p>
+
+    <a href="{% url 'agendamentos:editar_cliente' %}" class="btn-edit">✏️ Editar Perfil</a>
+  </div>
+
+  <hr />
+
+  <div class="meus-agendamentos">
+    <h2>📅 Meus Agendamentos</h2>
+    {% if agendamentos %}
+      <ul class="agenda-lista">
+        {% for ag in agendamentos %}
+          <li>
+            <strong>{{ ag.servico }}</strong> com <strong>{{ ag.barbeiro.nome }}</strong><br />
+            {{ ag.data_horario_reserva|date:"d/m/Y H:i" }} — <em>{{ ag.status|title }}</em>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="futuro">Você ainda não tem nenhum agendamento para essa semana.</p>
+    {% endif %}
+  </div>
+
+  <hr />
+
+  <div class="acoes">
+    <h2>⚙️ Ações Disponíveis</h2>
+    <ul>
+      <li><a href="{% url 'agendamentos:editar_cliente' %}">Editar dados (nome, telefone, foto)</a></li>
+      <li><a href="{% url 'password_change' %}">Alterar senha</a></li>
+      <li><span class="futuro">Histórico de cortes (em breve)</span></li>
+      <li><span class="futuro">Sistema de fidelidade (em breve)</span></li>
+    </ul>
+  </div>
+
+  <hr />
+
+  <form method="POST" action="{% url 'agendamentos:logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn-sair">🚪 Sair da Conta</button>
+  </form>
+</div>
+{% endblock %}

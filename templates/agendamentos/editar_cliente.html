@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2>✏️ Editar Perfil</h2>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    
+    <label for="nome">Nome</label>
+    <input type="text" name="nome" id="nome" value="{{ user.first_name }}" required />
+
+    <label for="email">E-mail</label>
+    <input type="email" name="email" id="email" value="{{ user.email }}" required />
+
+    <label for="telefone">Telefone (em breve)</label>
+    <input type="text" name="telefone" id="telefone" placeholder="(00) 00000-0000" disabled />
+
+    <button type="submit">Salvar Alterações</button>
+  </form>
+
+  <p class="voltar-home">
+    ⬅️ <a href="{% url 'agendamentos:painel_cliente' %}">Voltar para o painel</a>
+  </p>
+</div>
+{% endblock %}

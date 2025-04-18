@@ -1,0 +1,31 @@
+.footer {
+    background: var(--background-color);
+    text-align: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--accent-color);
+  }
+  
+  .footer p {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+  }
+  
+  .footer .social-links a {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color);
+    margin: 0 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    gap: 0.5rem;
+  }
+  
+  .footer .social-links a i {
+    font-size: 1.2rem;
+  }
+  
+  .footer .social-links a:hover {
+    color: #e09f00;
+  }
+  

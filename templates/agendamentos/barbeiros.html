@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Escolha um Barbeiro{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/barbeiros.css' %}?v=5">
+{% endblock %}
+
+{% block content %}
+<main class="barbeiros-page">
+
+  <h1>Escolha seu Barbeiro</h1>
+  <p class="subtitulo">Clique no barbeiro desejado para ver os horários disponíveis</p>
+
+  <section class="barbeiros-grid">
+    {% for barbeiro in barbeiros %}
+      <a href="{% url 'agendamentos:calendario_barbeiro' barbeiro.id %}" class="barbeiro-card">
+        <img 
+          src="{% if barbeiro.foto %}{{ barbeiro.foto.url }}{% else %}{% static 'imagens/default-user.png' %}{% endif %}" 
+          alt="Foto de {{ barbeiro.nome }}"
+          loading="lazy"
+        >
+        <h2>{{ barbeiro.nome|title }}</h2>
+      </a>
+    {% empty %}
+      <p>Nenhum barbeiro cadastrado no momento.</p>
+    {% endfor %}
+  </section>
+
+</main>
+{% endblock %}

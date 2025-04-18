@@ -1,0 +1,90 @@
+.header {
+  background: var(--background-color);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--accent-color);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem; /* novo: espaço entre logo e botões */
+}
+
+.logo {
+  height: 120px;
+  object-fit: contain;
+  max-width: 100%;
+}
+
+/* Remove contorno quando clica na logo */
+.header a:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.header-right {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center; /* novo: centraliza no desktop também */
+}
+
+/* Estilo dos botões do topo */
+.header-right a,
+.header-right form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  transition: background 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--accent-color);
+  color: var(--background-color);
+  text-transform: uppercase;
+  border: none;
+}
+
+/* Hover bonito */
+.header-right a:hover,
+.header-right form button:hover {
+  background: #e09f00;
+}
+
+/* 🔧 Responsividade: Header e botões empilhados */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .logo {
+    height: 100px;
+  }
+
+  .header-right {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .header-right a,
+  .header-right form button {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+}

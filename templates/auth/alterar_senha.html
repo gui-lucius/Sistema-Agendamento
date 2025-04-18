@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Alterar Senha - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-box">
+  <h2>🔒 Alterar Senha</h2>
+
+  {% if form.errors %}
+    <div class="alert">⚠️ Corrija os erros abaixo:</div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Salvar nova senha</button>
+  </form>
+
+  <p class="voltar-home">
+    ⬅️ <a href="{% url 'agendamentos:painel_cliente' %}">Voltar para o painel</a>
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+.barbeiros-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.barbeiros-page h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.barbeiros-page .subtitulo {
+  font-size: 1rem;
+  color: var(--secondary-text);
+  margin-bottom: 2rem;
+}
+
+.barbeiros-page .barbeiros-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.barbeiros-page .barbeiro-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  width: 180px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: transform 0.3s ease;
+}
+
+.barbeiros-page .barbeiro-card:hover {
+  transform: scale(1.05);
+}
+
+.barbeiros-page .barbeiro-card img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.barbeiros-page .barbeiro-card h2 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .barbeiros-page h1 {
+    font-size: 2.4rem;
+  }
+
+  .barbeiros-page .subtitulo {
+    font-size: 1.2rem;
+  }
+
+  .barbeiros-page .barbeiros-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .barbeiros-page .barbeiro-card {
+    width: 90%;
+    max-width: 300px;
+    padding: 2rem;
+  }
+
+  .barbeiros-page .barbeiro-card img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .barbeiros-page .barbeiro-card h2 {
+    font-size: 1.3rem;
+  }
+}

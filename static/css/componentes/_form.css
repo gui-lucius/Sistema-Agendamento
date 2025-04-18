@@ -1,0 +1,21 @@
+label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+    color: #eee;
+    font-size: 1rem;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    background-color: #e9f0fb;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  

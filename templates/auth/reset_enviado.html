@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Link Enviado - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="login-box">
+    <h2>📬 Verifique seu e-mail</h2>
+    <p>Se existir uma conta com esse endereço, enviamos um link para redefinir sua senha.</p>
+    <p>🕓 O link expira em algumas horas por segurança.</p>
+
+    <p class="voltar-home">
+      ⬅️ <a href="{% url 'agendamentos:login' %}">Voltar para o login</a>
+    </p>
+  </div>
+{% endblock %}

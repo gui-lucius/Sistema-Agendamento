@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Recuperar Senha - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-box">
+  <h2>🔐 Recuperar Senha</h2>
+
+  {% if form.errors %}
+    <div class="alert">⚠️ Verifique o e-mail informado.</div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="id_email">Digite seu e-mail:</label>
+    {{ form.email }}
+
+    <button type="submit">Enviar link de recuperação</button>
+  </form>
+
+  <p class="voltar-home">
+    ⬅️ <a href="{% url 'agendamentos:login' %}">Voltar para o login</a>
+  </p>
+</div>
+{% endblock %}

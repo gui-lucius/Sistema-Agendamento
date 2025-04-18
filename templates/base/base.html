@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A Barbearia RD oferece cortes de cabelo, design de barba, descoloração e mais. Agende já seu horário conosco!" />
+  <meta name="author" content="Barbearia RD" />
+  <link rel="icon" type="image/x-icon" href="{% static 'imagens/favicon.ico' %}" />
+
+  <title>{% block title %}Barbearia RD{% endblock %}</title>
+
+  <!-- Estilo principal -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=1" />
+
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <!-- Estilos adicionais por página -->
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- Cabeçalho -->
+  <header class="header">
+    <div class="container header-content">
+      <a href="{% url 'agendamentos:home' %}">
+        <img src="{% static 'imagens/logo.png' %}" alt="Logo da Barbearia RD" class="logo" loading="lazy" />
+      </a>
+
+      <div class="header-right">
+        <a href="https://maps.app.goo.gl/VoDQMjCG7vgZorPX7" target="_blank" class="btn-location">
+          📍 Nos encontramos aqui
+        </a>
+        <a href="{% url 'agendamentos:listar_barbeiros' %}" class="btn-whatsapp">
+          ✂️ Agende seu horário
+        </a>
+        <a href="https://wa.me/5548998082832" class="btn-whatsapp">
+          💬 Fale conosco no WhatsApp
+        </a>
+
+        {% if user.is_authenticated %}
+          <a href="{% url 'agendamentos:painel_cliente' %}" class="btn-login">
+            👤 {{ user.first_name|default:user.username|title }}
+          </a>
+        {% else %}
+          <a href="{% url 'agendamentos:login' %}" class="btn-login">👤 Entrar</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- Linha amarela abaixo do header -->
+  <div class="divider-top"></div>
+
+  <!-- Conteúdo -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Linha amarela acima do footer -->
+  <div class="divider-bottom"></div>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <div class="container">
+      <p>📍 Rua João Francisco Barcelos Júnior, 214 (Dentro do CTG)</p>
+      <p>⏰ Seg-Sáb: 9h - 20h</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/barbearia.rd7" target="_blank">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts por página -->
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

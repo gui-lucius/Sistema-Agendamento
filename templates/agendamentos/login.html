@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Login - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="login-box">
+    <h2>🔐 Entrar na sua conta</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" action="{% url 'agendamentos:login' %}" novalidate>
+      {% csrf_token %}
+
+      <label for="username">Usuário:</label>
+      <input type="text" name="username" id="username" placeholder="Digite seu e-mail" required>
+
+      <label for="password">Senha:</label>
+      <input type="password" name="password" id="password" placeholder="Digite sua senha" required>
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p class="recuperar-senha">
+      <a href="{% url 'password_reset' %}">🔑 Esqueceu sua senha?</a>
+    </p>
+
+    <p class="cadastro-link">
+      Ainda não tem conta?
+      <a href="{% url 'agendamentos:cadastro' %}">👤 Cadastre-se aqui</a>
+    </p>
+
+    <p class="voltar-home">
+      ⬅️ <a href="{% url 'agendamentos:home' %}">Voltar para a página inicial</a>
+    </p>
+  </div>
+{% endblock %}
