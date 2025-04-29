@@ -1,16 +1,52 @@
 .login-box {
-    background-color: #1c1c1c;
-    border: 2px solid #ffcc00;
-    border-radius: 12px;
-    padding: 35px 30px;
-    text-align: center;
+  background-color: #1c1c1c;
+  border: 2px solid #ffcc00;
+  border-radius: 12px;
+  padding: 60px 50px;
+  max-width: 520px;
+  width: 100%;
+  margin: 4rem auto; /* Centraliza horizontalmente e dá espaçamento */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Torna o form mais bonito e uniforme */
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border-radius: 6px;
+  border: none;
+  background-color: #e9f0fb;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Estilização do botão já deve vir do _buttons.css */
+
+/* Textos menores */
+.login-box p {
+  margin: 12px 0 0;
+  font-size: 0.95rem;
+  color: var(--secondary-text);
+}
+
+.login-box a {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.login-box a:hover {
+  text-decoration: underline;
+  color: #e09f00;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .login-box {
+    margin: 2rem 1rem;
+    padding: 30px 20px;
   }
-  
-  .alert {
-    background-color: #ff4d4d;
-    padding: 12px 15px;
-    border-left: 5px solid #cc0000;
-    border-radius: 6px;
-    font-weight: bold;
-  }
-  
+}

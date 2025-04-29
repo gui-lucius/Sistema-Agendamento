@@ -21,6 +21,7 @@ from .views import (
     cadastro_view,
     painel_cliente,
     editar_cliente,
+    editar_perfil_cliente,  # 👈 import da nova view
 )
 
 app_name = 'agendamentos'
@@ -49,8 +50,9 @@ urlpatterns = [
     # Painel do cliente e edição de perfil
     path('minha-conta/', painel_cliente, name='painel_cliente'),
     path('editar-perfil/', editar_cliente, name='editar_cliente'),
+    path('perfil/editar/', editar_perfil_cliente, name='editar_perfil_cliente'),  # ✅ NOVA ROTA
 
-    # Recuperação de senha (templates dentro de templates/auth/)
+    # Recuperação de senha
     path('senha/reset/', PasswordResetView.as_view(
         template_name="auth/recuperar_senha.html"
     ), name='password_reset'),
@@ -67,12 +69,12 @@ urlpatterns = [
         template_name="auth/reset_completo.html"
     ), name='password_reset_complete'),
 
-    # Alteração de senha (autenticado)
+    # Alteração de senha
     path('senha/alterar/', PasswordChangeView.as_view(
         template_name="auth/alterar_senha.html"
     ), name='password_change'),
 
     path('senha/alterar/sucesso/', PasswordChangeDoneView.as_view(
-        template_name="auth/alterar_senha_done.html"  # Você pode criar esse template depois
+        template_name="auth/alterar_senha_done.html"
     ), name='password_change_done'),
 ]

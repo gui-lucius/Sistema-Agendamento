@@ -1,15 +1,30 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
+from django import forms
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
+
+# 🔧 Cria um form customizado para ocultar o grupo "Cliente"
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Mostra apenas grupos que NÃO sejam "Cliente"
+        if "groups" in self.fields:
+            self.fields["groups"].queryset = Group.objects.exclude(name="Cliente")
 
 # 🔧 Remove o User padrão antes de registrar o customizado
 admin.site.unregister(User)
 
 @admin.register(User)
 class CustomUserAdmin(DefaultUserAdmin):
+    form = CustomUserChangeForm
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        # Oculta usuários do grupo "Cliente"
+        # Oculta usuários do grupo "Cliente" na listagem
         return qs.exclude(groups__name='Cliente')
 
     fieldsets = (
@@ -21,7 +36,6 @@ class CustomUserAdmin(DefaultUserAdmin):
                 "is_staff",
                 "is_superuser",
                 "groups",
-                "user_permissions",
             )
         }),
         ("Datas importantes", {"fields": ("last_login", "date_joined")}),

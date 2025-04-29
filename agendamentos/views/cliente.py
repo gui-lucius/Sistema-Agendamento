@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
+
 from clientes.decorators import cliente_required
+from agendamentos.forms.cliente import ClienteForm
+from clientes.models import Cliente
 
 
 def cliente_login_view(request):
@@ -23,25 +26,45 @@ def cadastro_view(request):
     if request.method == "POST":
         nome = request.POST.get("nome")
         email = request.POST.get("email")
+        telefone = request.POST.get("telefone")
         senha = request.POST.get("senha")
 
-        if not all([nome, email, senha]):
+        print("📥 Dados recebidos:", nome, email, telefone)
+
+        if not all([nome, email, senha, telefone]):
+            print("⚠️ Campos obrigatórios ausentes.")
             return render(request, "agendamentos/cadastro.html", {
                 "erro": "Todos os campos são obrigatórios."
             })
+
         if User.objects.filter(username=email).exists():
+            print("❌ E-mail já cadastrado:", email)
             return render(request, "agendamentos/cadastro.html", {
                 "erro": "Este e-mail já está em uso."
             })
 
+        # Criação do usuário
         user = User.objects.create_user(
             username=email,
             email=email,
             password=senha,
             first_name=nome
         )
+        print("✅ Usuário criado com ID:", user.id)
+
+        # Criação do cliente
+        cliente = Cliente.objects.create(
+            user=user,
+            nome=nome,
+            telefone=telefone,
+            email=email
+        )
+        print("✅ Cliente criado com ID:", cliente.id)
+
+        # Adiciona ao grupo Cliente
         grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
         user.groups.add(grupo_cliente)
+        print("👥 Adicionado ao grupo 'Cliente'")
 
         return redirect("agendamentos:login")
 
@@ -50,7 +73,15 @@ def cadastro_view(request):
 
 @cliente_required
 def painel_cliente(request):
-    return render(request, 'agendamentos/painel_cliente.html', {'user': request.user})
+    cliente, _ = Cliente.objects.get_or_create(
+        user=request.user,
+        defaults={'nome': request.user.first_name}
+    )
+
+    return render(request, 'agendamentos/painel_cliente.html', {
+        'user': request.user,
+        'cliente': cliente
+    })
 
 
 @cliente_required
@@ -73,3 +104,25 @@ def editar_cliente(request):
         return redirect('agendamentos:painel_cliente')
 
     return render(request, 'agendamentos/editar_cliente.html', {'user': user})
+
+
+@cliente_required
+def editar_perfil_cliente(request):
+    cliente, _ = Cliente.objects.get_or_create(
+        usuario=request.user,
+        defaults={'nome': request.user.first_name}
+    )
+
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, request.FILES, instance=cliente)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil atualizado com sucesso.")
+            return redirect('agendamentos:painel_cliente')
+    else:
+        form = ClienteForm(instance=cliente)
+
+    return render(request, 'agendamentos/editar_perfil.html', {
+        'form': form,
+        'cliente': cliente
+    })

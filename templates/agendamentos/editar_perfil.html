@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil - Barbearia RD{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/login.css' %}">
+  <style>
+    .form-container {
+      max-width: 450px;
+      margin: 0 auto;
+      padding: 2rem;
+      border: 2px solid var(--accent-color);
+      border-radius: 8px;
+      background-color: #1c1c1c;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    .form-container img.foto-perfil {
+      display: block;
+      margin: 0 auto 1rem;
+      max-width: 160px;
+      max-height: 160px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-color);
+    }
+
+    .form-container .form-control {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      border: none;
+      background: #eee;
+    }
+
+    .form-control-file {
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .btn-salvar {
+      background: var(--accent-color);
+      color: var(--background-color);
+      font-weight: bold;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-salvar:hover {
+      background: #e09f00;
+    }
+
+    .voltar-home {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .voltar-home a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    .messages {
+      color: tomato;
+      text-align: center;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2>✏️ Editar Perfil</h2>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if cliente.foto %}
+      <img src="{{ cliente.foto.url }}" alt="Foto do cliente" class="foto-perfil">
+    {% endif %}
+
+    <button type="submit" class="btn-salvar">Salvar Alterações</button>
+  </form>
+
+  <p class="voltar-home">
+    ⬅️ <a href="{% url 'agendamentos:painel_cliente' %}">Voltar para o painel</a>
+  </p>
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 import os
 from django.db.models.signals import post_delete, m2m_changed
 from django.dispatch import receiver
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import User, Group
 
 from agendamentos.core.models import Barbeiro
 
@@ -18,7 +18,7 @@ def deletar_foto_barbeiro(sender, instance, **kwargs):
         try:
             if os.path.isfile(instance.foto.path):
                 os.remove(instance.foto.path)
-                print(f"🧼 Foto removida: {instance.foto.path}")
+                print(f"🧼 Foto do barbeiro removida: {instance.foto.path}")
         except Exception as e:
             print(f"[ERRO] Falha ao excluir imagem do barbeiro: {e}")
 
@@ -44,15 +44,3 @@ def criar_ou_remover_barbeiro_ao_mudar_grupo(sender, instance, action, pk_set, *
             if Barbeiro.objects.filter(usuario=instance).exists():
                 Barbeiro.objects.filter(usuario=instance).delete()
                 print(f"🗑️ Barbeiro removido: '{instance.username}' não está mais em nenhum grupo válido")
-
-
-# === CLIENTES ===
-
-@receiver(m2m_changed, sender=User.groups.through)
-def definir_cliente_automaticamente(sender, instance, action, pk_set, **kwargs):
-    if action == 'post_add':
-        grupos = instance.groups.values_list('name', flat=True)
-        if 'Colaborador' not in grupos and 'Dono' not in grupos:
-            grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
-            instance.groups.add(grupo_cliente)
-            print(f"🧑‍💼 Novo cliente '{instance.username}' adicionado automaticamente ao grupo 'Cliente'")

@@ -1,15 +1,32 @@
 .form-container {
-    background-color: #1c1c1c;
-    border: 2px solid #ffc107;
-    border-radius: 12px;
-    padding: 35px 30px;
-    max-width: 420px;
-    text-align: center;
+  background-color: #1c1c1c;
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  padding: 40px 30px;
+  max-width: 540px;
+  width: 90%;
+  margin: 2rem auto; /* 👈 Centraliza */
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-container h2 {
+  color: #ffc107;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+}
+
+.form-container input {
+  margin-bottom: 15px;
+}
+
+/* Responsivo caso queira ainda mais controle no mobile */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 30px 20px;
   }
-  
+
   .form-container h2 {
-    color: #ffc107;
-    font-size: 1.6rem;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
   }
-  
+}

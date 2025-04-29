@@ -8,31 +8,37 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem; /* novo: espaço entre logo e botões */
+  gap: 2rem;
+  flex-wrap: nowrap;
 }
 
+/* Logo maior e alinhada no centro */
 .logo {
-  height: 120px;
+  height: auto;
+  max-height: 180px;
+  width: auto;
+  max-width: 180px;
   object-fit: contain;
-  max-width: 100%;
+  display: block;
+  flex-shrink: 0; /* NÃO encolhe */
 }
 
-/* Remove contorno quando clica na logo */
+/* Remove contorno ao focar */
 .header a:focus {
   outline: none;
   box-shadow: none;
 }
 
+/* Botões lado a lado no desktop */
 .header-right {
   display: flex;
   gap: 1rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  justify-content: center; /* novo: centraliza no desktop também */
+  justify-content: flex-end;
+  flex: 1;
 }
 
-/* Estilo dos botões do topo */
 .header-right a,
 .header-right form button {
   display: inline-flex;
@@ -51,15 +57,38 @@
   color: var(--background-color);
   text-transform: uppercase;
   border: none;
+  min-width: 160px;
+  text-align: center;
 }
 
-/* Hover bonito */
+/* 🔧 Somente para o botão de login: limitar largura e cortar texto se necessário */
+.header-right .btn-login {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  direction: ltr;
+}
+
+.btn-login .login-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 140px; /* Ajusta conforme seu gosto */
+}
+
+
+
+/* Hover */
 .header-right a:hover,
 .header-right form button:hover {
   background: #e09f00;
 }
 
-/* 🔧 Responsividade: Header e botões empilhados */
+/* === MOBILE === */
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
@@ -69,7 +98,8 @@
   }
 
   .logo {
-    height: 100px;
+    height: 180px;
+    max-height: 180px;
   }
 
   .header-right {
@@ -84,7 +114,6 @@
     width: 100%;
     max-width: 280px;
     justify-content: center;
-    text-align: center;
     font-size: 0.95rem;
   }
 }

@@ -1,26 +1,136 @@
 .multi-step-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease;
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: #d4a300;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* Etapas do formulário */
+.modal-step {
+  display: block;
+}
+
+.modal-step label {
+  display: block;
+  margin-bottom: 8px;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-step input,
+.modal-step select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #d4a300;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #333;
+  background: #f5f5f5;
+  transition: border 0.3s ease;
+}
+
+.modal-step input::placeholder,
+.modal-step select:invalid {
+  color: #aaa;
+}
+
+.modal-step input:focus,
+.modal-step select:focus {
+  border-color: #c29200;
+  outline: none;
+}
+
+/* 🆕 Select estilizado */
+.modal-step select option {
+  background-color: #fff;
+  color: #111;
+  font-weight: bold;
+}
+
+/* Botões */
+.modal-step button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-proximo,
+#btnReservar {
+  background-color: #d4a300;
+  color: #000;
+}
+
+.btn-proximo:hover,
+#btnReservar:hover {
+  background-color: #c29200;
+  color: #fff;
+}
+
+.btn-cancelar {
+  background-color: #f44336;
+  color: white;
+  margin-top: 15px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.btn-cancelar:hover {
+  background-color: #c62828;
+}
+
+/* Animação */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Modal responsivo */
+@media (max-width: 600px) {
   .modal-content {
-    background: #fff;
-    padding: 30px 25px;
-    border-radius: 12px;
-    max-width: 400px;
     width: 90%;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
-    animation: fadeIn 0.3s ease;
+    padding: 20px;
   }
-  
-  .modal-content h3 {
-    color: #d4a300;
-    margin-bottom: 25px;
-    font-size: 1.4rem;
+
+  .btn-proximo,
+  #btnReservar,
+  .btn-cancelar {
+    width: 100%;
+    margin: 10px 0;
   }
-  
+}

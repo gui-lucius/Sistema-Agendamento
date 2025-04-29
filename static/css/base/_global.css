@@ -16,105 +16,10 @@ html, body {
   scroll-behavior: smooth;
 }
 
-/* Ajuda em layouts que colam na borda no mobile */
 body {
-  padding: 0 10px;
+  padding: 0 10px; /* evita colar nas bordas no mobile */
 }
 
 *, *::before, *::after {
   box-sizing: inherit;
-}
-
-/* ------------------ SOBRE NÓS ------------------ */
-.about {
-  background-color: #111;
-  color: #eaeaea;
-  padding: 2rem 0;
-  text-align: center;
-}
-
-.about h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: var(--accent-color);
-}
-
-.about p {
-  max-width: 800px;
-  margin: 0 auto;
-  color: var(--secondary-text);
-  font-size: 1.1rem;
-  padding: 0 1rem;
-}
-
-/* ------------------ PREÇOS ------------------ */
-.pricing {
-  background-color: #111;
-  padding: 2rem 0;
-  text-align: center;
-}
-
-.pricing h2 {
-  color: var(--accent-color);
-  margin-bottom: 1.5rem;
-}
-
-.price-list {
-  list-style: none;
-  margin: 0 auto;
-  max-width: 600px;
-  border: 1px solid #444;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.price-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background: #1b1b1b;
-  border-bottom: 1px solid #444;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.price-list li:last-child {
-  border-bottom: none;
-}
-
-.service-name {
-  font-size: 1rem;
-  color: var(--text-color);
-}
-
-.price {
-  font-size: 1rem;
-  color: var(--accent-color);
-  font-weight: bold;
-}
-
-/* 📱 Ajuste para mobile */
-@media (max-width: 600px) {
-  .about h2 {
-    font-size: 1.6rem;
-  }
-
-  .about p {
-    font-size: 1rem;
-  }
-
-  .pricing h2 {
-    font-size: 1.6rem;
-  }
-
-  .price-list li {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .service-name, .price {
-    width: 100%;
-    text-align: left;
-  }
 }

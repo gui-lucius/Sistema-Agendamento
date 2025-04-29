@@ -1,23 +1,27 @@
-/* Base */
+/* ====================
+   🎯 Base (reset + variáveis + estrutura)
+==================== */
 @import url('base/_reset.css');
 @import url('base/_global.css');
 @import url('base/_layout.css');
 
-/* Componentes reutilizáveis */
+/* ====================
+   🧩 Componentes reutilizáveis
+==================== */
 @import url('componentes/_buttons.css');
 @import url('componentes/_form.css');
 @import url('componentes/_alerts.css');
 @import url('componentes/_modal.css');
 @import url('componentes/_cards.css');
 @import url('componentes/_links.css');
-@import url('componentes/_header.css'); /* NOVO */
-@import url('componentes/_footer.css'); /* NOVO */
+@import url('componentes/_footer.css');
+@import url('componentes/_header.css'); /* sempre por último entre os componentes */
 
-/* Estilos específicos por página */
-@import url('pages/index.css'); /* ADICIONADO AQUI */
+/* ====================
+   📄 Estilos por página
+==================== */
+@import url('pages/index.css');
 @import url('pages/barbeiros.css');
 @import url('pages/cadastro.css');
 @import url('pages/calendario.css');
 @import url('pages/login.css');
-
-
