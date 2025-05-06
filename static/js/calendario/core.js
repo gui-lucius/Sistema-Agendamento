@@ -18,7 +18,7 @@ export async function initCalendar(barbeiroId, loading) {
 
     businessHours: [
       {
-        daysOfWeek: [1, 2, 3, 4, 5, 6], // Seg a Sáb
+        daysOfWeek: [1, 2, 3, 4, 5, 6],
         startTime: '09:00',
         endTime: '21:00'
       }
@@ -37,7 +37,7 @@ export async function initCalendar(barbeiroId, loading) {
     },
 
     allDaySlot: false,
-    hiddenDays: [0], // esconde o domingo
+    hiddenDays: [0], 
     selectable: true,
     selectOverlap: false,
 

@@ -2,11 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
-
 from clientes.decorators import cliente_required
 from agendamentos.forms.cliente import ClienteForm
 from clientes.models import Cliente
-
 
 def cliente_login_view(request):
     if request.method == "POST":
@@ -20,7 +18,6 @@ def cliente_login_view(request):
         messages.error(request, "Usuário ou senha inválidos ou não autorizado.")
 
     return render(request, "agendamentos/login.html")
-
 
 def cadastro_view(request):
     if request.method == "POST":
@@ -43,7 +40,6 @@ def cadastro_view(request):
                 "erro": "Este e-mail já está em uso."
             })
 
-        # Criação do usuário
         user = User.objects.create_user(
             username=email,
             email=email,
@@ -52,7 +48,6 @@ def cadastro_view(request):
         )
         print("✅ Usuário criado com ID:", user.id)
 
-        # Criação do cliente
         cliente = Cliente.objects.create(
             user=user,
             nome=nome,
@@ -61,7 +56,6 @@ def cadastro_view(request):
         )
         print("✅ Cliente criado com ID:", cliente.id)
 
-        # Adiciona ao grupo Cliente
         grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
         user.groups.add(grupo_cliente)
         print("👥 Adicionado ao grupo 'Cliente'")
@@ -109,7 +103,7 @@ def editar_cliente(request):
 @cliente_required
 def editar_perfil_cliente(request):
     cliente, _ = Cliente.objects.get_or_create(
-        usuario=request.user,
+        user=request.user,
         defaults={'nome': request.user.first_name}
     )
 

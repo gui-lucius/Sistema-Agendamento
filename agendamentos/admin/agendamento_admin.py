@@ -4,14 +4,12 @@ from django.core.exceptions import ValidationError
 from django.utils.timezone import localtime
 from django.core.mail import send_mail
 from django.conf import settings
-
 from agendamentos.core.models import Agendamento, Barbeiro
 from agendamentos.admin.utils import (
     is_dono,
     RestrictToOwnDataMixin,
     atribuir_barbeiro_automaticamente
 )
-
 
 class AgendamentoForm(forms.ModelForm):
     class Meta:
@@ -31,7 +29,6 @@ class AgendamentoForm(forms.ModelForm):
         if status == 'recusado' and not motivo:
             raise ValidationError({'motivo_cancelamento': "Informe o motivo do cancelamento."})
         return cleaned_data
-
 
 @admin.register(Agendamento)
 class AgendamentoAdmin(RestrictToOwnDataMixin, admin.ModelAdmin):

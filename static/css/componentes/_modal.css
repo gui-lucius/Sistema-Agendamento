@@ -26,7 +26,6 @@
   font-weight: bold;
 }
 
-/* Etapas do formulário */
 .modal-step {
   display: block;
 }
@@ -63,14 +62,12 @@
   outline: none;
 }
 
-/* 🆕 Select estilizado */
 .modal-step select option {
   background-color: #fff;
   color: #111;
   font-weight: bold;
 }
 
-/* Botões */
 .modal-step button {
   padding: 10px 20px;
   margin: 5px;
@@ -108,7 +105,6 @@
   background-color: #c62828;
 }
 
-/* Animação */
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -120,7 +116,6 @@
   }
 }
 
-/* Modal responsivo */
 @media (max-width: 600px) {
   .modal-content {
     width: 90%;

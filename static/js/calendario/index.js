@@ -17,10 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
+    const telefone = document.getElementById("telefone").value; // 🆕 Novo campo
     const servico = document.getElementById("servico").value;
     const lembrete = document.getElementById("lembrete_minutos").value;
 
-    if (!nome || !email || !servico || !lembrete) {
+    if (!nome || !email || !telefone || !servico || !lembrete) {
       mostrarMensagemGlobal("Preencha todos os campos!", "erro");
       return;
     }
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const payload = {
       nome,
       email,
+      telefone, // 🆕 Adicionado no payload
       servico,
       lembrete_minutos: lembrete,
       data_horario: selectedDate,
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.ok) {
         mostrarMensagemGlobal("Reserva realizada com sucesso!", "sucesso");
         fecharModal();
-        if (calendar) calendar.refetchEvents(); // recarrega os eventos do calendário
+        if (calendar) calendar.refetchEvents();
       } else {
         mostrarMensagemGlobal("Erro ao realizar reserva!", "erro");
       }

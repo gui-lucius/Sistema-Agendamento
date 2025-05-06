@@ -1,16 +1,16 @@
 from datetime import datetime, timedelta
 from uuid import UUID
-
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect  # <-- Aqui está o fix
 from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from clientes.models import Cliente  # <-- Model Cliente
 
 from agendamentos.core.models import (
     Barbeiro,
@@ -19,31 +19,41 @@ from agendamentos.core.models import (
     Agendamento,
 )
 
-
 def home(request):
     return render(request, 'agendamentos/index.html')
 
-
+@login_required(login_url='agendamentos:login')
 def listar_barbeiros(request):
     barbeiros = Barbeiro.objects.all()
     return render(request, 'agendamentos/barbeiros.html', {'barbeiros': barbeiros})
 
-
+@login_required(login_url='agendamentos:login')
 def calendario_com_token(request, barbeiro_id):
     barbeiro = get_object_or_404(Barbeiro, id=barbeiro_id)
+
     try:
-        user = barbeiro.usuario
-        refresh = RefreshToken.for_user(user)
+        cliente = Cliente.objects.get(user=request.user)
+        refresh = RefreshToken.for_user(barbeiro.usuario)
         access_token = str(refresh.access_token)
 
         context = {
             "access_token": access_token,
-            "barbeiro": barbeiro
+            "barbeiro": barbeiro,
+            "cliente": {
+                "nome": cliente.nome,
+                "email": cliente.email,
+                "telefone": cliente.telefone
+            }
         }
         return render(request, "agendamentos/calendario.html", context)
-    except Exception as e:
-        return JsonResponse({"erro": f"Erro ao gerar token: {str(e)}"}, status=500)
 
+    except Cliente.DoesNotExist:
+        print("[ERRO] Cliente não encontrado para o usuário logado.")
+        return redirect("agendamentos:editar_perfil_cliente")
+
+    except Exception as e:
+        print(f"[ERRO GERAL] {e}")
+        return JsonResponse({"erro": f"Erro ao gerar token ou buscar cliente: {str(e)}"}, status=500)
 
 @api_view(['GET'])
 def horarios_ocupados(request, barbeiro_id):
@@ -54,26 +64,16 @@ def horarios_ocupados(request, barbeiro_id):
             status__in=['pendente', 'aceito']
         )
 
-        eventos = []
-
-        for ag in agendamentos:
-            status_label = {
-                'pendente': 'Aguardando Confirmação',
-                'aceito': 'Confirmado',
-                'recusado': 'Cancelado'
-            }.get(ag.status, 'Agendamento')
-
-            eventos.append({
-                "data_horario_reserva": ag.data_horario_reserva.isoformat(),
-                "status": ag.status
-            })
+        eventos = [{
+            "data_horario_reserva": ag.data_horario_reserva.isoformat(),
+            "status": ag.status
+        } for ag in agendamentos]
 
         return Response(eventos)
 
     except Exception as e:
         print(f"[ERRO] Falha ao buscar horários ocupados: {e}")
         return Response({'erro': 'Erro ao buscar horários ocupados.'}, status=500)
-
 
 @api_view(['GET'])
 def horarios_bloqueados(request, barbeiro_id):
@@ -97,10 +97,10 @@ def horarios_bloqueados(request, barbeiro_id):
                     hora_atual += timedelta(hours=1)
 
         return Response(bloqueios)
+
     except Exception as e:
         print(f"[ERRO] Falha ao buscar bloqueios: {e}")
         return Response({'erro': 'Erro ao buscar bloqueios.'}, status=500)
-
 
 @csrf_exempt
 def cancelar_agendamento(request, agendamento_id, token):

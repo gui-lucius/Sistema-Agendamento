@@ -6,7 +6,7 @@
   padding: 1rem;
   color: var(--text-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 1.5rem; /* espaçamento entre os cards */
+  margin-bottom: 1.5rem; 
 }
 
 .service-item:hover,
@@ -24,7 +24,6 @@
   margin-bottom: 10px;
 }
 
-/* Responsividade: empilha os cards e garante visual bonito */
 @media (max-width: 768px) {
   .cards-container {
     display: flex;

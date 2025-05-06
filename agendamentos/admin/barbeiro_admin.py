@@ -2,8 +2,7 @@ from django.contrib import admin
 from django import forms
 from agendamentos.core.models import Barbeiro
 from agendamentos.admin.utils import RestrictToOwnDataMixin
-from django.contrib.auth.models import User  # 👈 Importante
-# 🚨 Adicionando esse import do User pra poder filtrar depois.
+from django.contrib.auth.models import User 
 
 class BarbeiroForm(forms.ModelForm):
     class Meta:

@@ -4,37 +4,34 @@
 {% block title %}Calendário de Reservas{% endblock %}
 
 {% block extra_css %}
-  <!-- FullCalendar -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/pages/calendario.css' %}">
 {% endblock %}
 
 {% block content %}
-  <!-- Alerta global -->
   <div id="mensagem-global" role="alert" aria-live="assertive"></div>
 
   <h1 class="titulo-calendario">Calendário de Reservas</h1>
 
-  <!-- Calendário -->
   <div id="calendar" data-barbeiro-id="{{ barbeiro.id }}" aria-label="Calendário de horários disponíveis"></div>
 
-  <!-- Modal de Reserva -->
   <div id="reservaModal" role="dialog" aria-modal="true" class="multi-step-modal">
     <div class="modal-content">
       <h3 id="modalTitulo">Agendar Horário</h3>
 
-      <!-- Etapa 1 -->
       <div class="modal-step" id="step-1">
         <label for="nome">Seu Nome:</label>
-        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+        <input type="text" id="nome" name="nome" value="{{ cliente.nome }}" required>
 
         <label for="email">Seu E-mail:</label>
-        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
+        <input type="email" id="email" name="email" value="{{ cliente.email }}" required>
+
+        <label for="telefone">Seu Telefone:</label>
+        <input type="text" id="telefone" name="telefone" value="{{ cliente.telefone }}" required>
 
         <button type="button" class="btn-proximo" onclick="mostrarProximoStep(2)">Próximo</button>
       </div>
 
-      <!-- Etapa 2 -->
       <div class="modal-step" id="step-2" style="display:none;">
         <label>Escolha o Serviço:</label>
         <select id="servico" required>
@@ -50,7 +47,6 @@
         <button type="button" onclick="mostrarProximoStep(1)">Voltar</button>
       </div>
 
-      <!-- Etapa 3 -->
       <div class="modal-step" id="step-3" style="display:none;">
         <label>Quando deseja ser lembrado?</label>
         <select id="lembrete_minutos" required>
@@ -68,7 +64,6 @@
     </div>
   </div>
 
-  <!-- Carregando -->
   <div id="loading" role="status" aria-live="assertive" aria-label="Carregando">
     <div class="spinner"></div>
     <p>Aguarde, processando...</p>
@@ -76,15 +71,12 @@
 {% endblock %}
 
 {% block extra_js %}
-  <!-- FullCalendar -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales/pt-br.js"></script>
 
-  <!-- Token de autenticação -->
   <script>
     const ACCESS_TOKEN = "{{ access_token }}";
   </script>
 
-  <!-- JS modularizado -->
   <script type="module" src="{% static 'js/calendario/index.js' %}"></script>
 {% endblock %}

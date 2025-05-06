@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 
-# 🔔 Notifica o barbeiro com os dados do cliente
 def notificar_barbeiro(nome_cliente, data_horario, barbeiro, servico=None):
     try:
         nome_barbearia = getattr(settings, "NOME_NEGOCIO", "Sua Barbearia")
@@ -27,8 +26,6 @@ def notificar_barbeiro(nome_cliente, data_horario, barbeiro, servico=None):
     except Exception as e:
         print(f"[ERRO EMAIL] Falha ao notificar barbeiro: {e}")
 
-
-# ✅ Nova função: Notifica o cliente com link de cancelamento
 def notificar_cliente(agendamento):
     try:
         assunto = "✅ Confirmação de Agendamento"
@@ -45,7 +42,6 @@ Caso queira cancelar, clique no link abaixo:
 Até logo! 👋
 Equipe {getattr(settings, "NOME_NEGOCIO", "Sua Barbearia")}
 """
-
         send_mail(
             assunto,
             corpo,

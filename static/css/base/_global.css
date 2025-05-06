@@ -17,7 +17,7 @@ html, body {
 }
 
 body {
-  padding: 0 10px; /* evita colar nas bordas no mobile */
+  padding: 0 10px;
 }
 
 *, *::before, *::after {

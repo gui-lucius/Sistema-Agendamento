@@ -6,7 +6,6 @@ from agendamentos.core.models import Agendamento, Barbeiro
 from agendamentos.views.barbeiro import notificar_barbeiro, notificar_cliente
 from uuid import uuid4
 
-
 @api_view(['POST'])
 @csrf_exempt
 def criar_agendamento(request):
@@ -25,7 +24,7 @@ def criar_agendamento(request):
         return Response({'erro': 'Campos obrigatórios faltando.'}, status=400)
 
     barbeiro = Barbeiro.objects.get(id=barbeiro_id)
-    data_horario = parse_datetime(data_horario_str)  # ✅ timezone já tratado
+    data_horario = parse_datetime(data_horario_str)  
 
     agendamento = Agendamento.objects.create(
         barbeiro=barbeiro,
@@ -35,10 +34,9 @@ def criar_agendamento(request):
         lembrete_minutos=lembrete_minutos,
         data_horario_reserva=data_horario,
         cancel_token=uuid4(),
-        status="aceito"  # ✅ já vem como confirmado
+        status="aceito"  
     )
 
-    # ✉️ Notificações
     notificar_barbeiro(nome, data_horario, barbeiro, servico)
     notificar_cliente(agendamento)
 

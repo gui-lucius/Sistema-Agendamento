@@ -2,10 +2,8 @@ from django.contrib import admin
 from django import forms
 from django.forms.widgets import DateInput
 from datetime import datetime, timedelta
-
 from agendamentos.core.models import HorarioBloqueado, Barbeiro
 from agendamentos.admin.utils import is_dono
-
 
 class HorarioBloqueadoForm(forms.ModelForm):
     data = forms.DateField(
@@ -33,7 +31,6 @@ class HorarioBloqueadoForm(forms.ModelForm):
             if hora_inicial > hora_final:
                 raise forms.ValidationError("A hora final deve ser maior ou igual à inicial.")
         return cleaned_data
-
 
 @admin.register(HorarioBloqueado)
 class HorarioBloqueadoAdmin(admin.ModelAdmin):

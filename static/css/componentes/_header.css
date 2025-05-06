@@ -12,7 +12,6 @@
   flex-wrap: nowrap;
 }
 
-/* Logo maior e alinhada no centro */
 .logo {
   height: auto;
   max-height: 180px;
@@ -20,16 +19,14 @@
   max-width: 180px;
   object-fit: contain;
   display: block;
-  flex-shrink: 0; /* NÃO encolhe */
+  flex-shrink: 0; 
 }
 
-/* Remove contorno ao focar */
 .header a:focus {
   outline: none;
   box-shadow: none;
 }
 
-/* Botões lado a lado no desktop */
 .header-right {
   display: flex;
   gap: 1rem;
@@ -61,7 +58,6 @@
   text-align: center;
 }
 
-/* 🔧 Somente para o botão de login: limitar largura e cortar texto se necessário */
 .header-right .btn-login {
   max-width: 200px;
   overflow: hidden;
@@ -77,18 +73,14 @@
   white-space: nowrap;
   display: inline-block;
   vertical-align: middle;
-  max-width: 140px; /* Ajusta conforme seu gosto */
+  max-width: 140px; 
 }
 
-
-
-/* Hover */
 .header-right a:hover,
 .header-right form button:hover {
   background: #e09f00;
 }
 
-/* === MOBILE === */
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;

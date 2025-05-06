@@ -10,19 +10,14 @@
 
   <title>{% block title %}Barbearia RD{% endblock %}</title>
 
-  <!-- Estilo principal -->
   <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2" />
 
-  <!-- Font Awesome para ícones -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-  <!-- Estilos adicionais por página -->
   {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-
-  <!-- Cabeçalho -->
   <header class="header">
     <div class="container header-content">
       <a href="{% url 'agendamentos:home' %}">
@@ -51,15 +46,12 @@
     </div>
   </header>
 
-  <!-- Linha amarela abaixo do header -->
   <div class="divider-top"></div>
 
-  <!-- Conteúdo -->
   <main>
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Rodapé -->
   <footer class="footer">
     <div class="container">
       <p>📍 Rua João Francisco Barcelos Júnior, 214 (Dentro do CTG)</p>
@@ -72,7 +64,6 @@
     </div>
   </footer>
 
-  <!-- Scripts por página -->
   {% block extra_js %}{% endblock %}
 </body>
 </html>

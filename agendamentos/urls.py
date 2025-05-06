@@ -21,38 +21,31 @@ from .views import (
     cadastro_view,
     painel_cliente,
     editar_cliente,
-    editar_perfil_cliente,  # 👈 import da nova view
+    editar_perfil_cliente,
 )
 
 app_name = 'agendamentos'
 
 urlpatterns = [
-    # Página inicial
     path('', home, name='home'),
 
-    # Barbeiros e calendário
     path('barbeiros/', listar_barbeiros, name='listar_barbeiros'),
     path('calendario/<int:barbeiro_id>/', calendario_com_token, name='calendario_barbeiro'),
 
-    # APIs - Agendamentos e bloqueios
     path('api/agendamentos/', criar_agendamento, name='criar_agendamento'),
     path('api/horarios/<int:barbeiro_id>/', horarios_ocupados, name='horarios_ocupados'),
     path('api/bloqueios/<int:barbeiro_id>/', horarios_bloqueados, name='horarios_bloqueados'),
 
-    # Cancelamento via token
     path('cancelar-agendamento/<int:agendamento_id>/<uuid:token>/', cancelar_agendamento, name='cancelar_agendamento'),
 
-    # Autenticação
     path('login/', cliente_login_view, name='login'),
     path('logout/', LogoutView.as_view(next_page='agendamentos:home'), name='logout'),
     path('cadastro/', cadastro_view, name='cadastro'),
 
-    # Painel do cliente e edição de perfil
     path('minha-conta/', painel_cliente, name='painel_cliente'),
     path('editar-perfil/', editar_cliente, name='editar_cliente'),
-    path('perfil/editar/', editar_perfil_cliente, name='editar_perfil_cliente'),  # ✅ NOVA ROTA
+    path('perfil/editar/', editar_perfil_cliente, name='editar_perfil_cliente'),
 
-    # Recuperação de senha
     path('senha/reset/', PasswordResetView.as_view(
         template_name="auth/recuperar_senha.html"
     ), name='password_reset'),
@@ -69,7 +62,6 @@ urlpatterns = [
         template_name="auth/reset_completo.html"
     ), name='password_reset_complete'),
 
-    # Alteração de senha
     path('senha/alterar/', PasswordChangeView.as_view(
         template_name="auth/alterar_senha.html"
     ), name='password_change'),

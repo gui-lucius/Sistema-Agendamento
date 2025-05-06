@@ -1,4 +1,3 @@
-/* === Layout Base === */
 .container {
   width: 90%;
   max-width: 1200px;
@@ -12,7 +11,6 @@ main {
   background-color: var(--background-color);
 }
 
-/* === Divisores horizontais === */
 .divider-top,
 .divider-bottom {
   height: 2px;
@@ -20,9 +18,8 @@ main {
   background-color: var(--accent-color);
 }
 
-/* === Responsivo base === */
 @media (max-width: 600px) {
   main {
-    padding-bottom: 3rem; /* um respiro extra no mobile */
+    padding-bottom: 3rem; 
   }
 }

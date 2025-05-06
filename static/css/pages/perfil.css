@@ -14,7 +14,6 @@
     margin-bottom: 1rem;
   }
   
-  /* Imagem de perfil */
   .foto-perfil-cliente {
     width: 120px;
     height: 120px;
@@ -24,7 +23,6 @@
     margin-bottom: 1rem;
   }
   
-  /* Info do usuário */
   .user-info {
     display: flex;
     flex-direction: column;
@@ -37,7 +35,6 @@
     font-size: 1rem;
   }
   
-  /* Botão editar */
   .btn-edit {
     background-color: var(--accent-color);
     color: var(--background-color);
@@ -53,7 +50,6 @@
     background-color: #e09f00;
   }
   
-  /* Agendamentos */
   .meus-agendamentos ul {
     list-style: none;
     padding-left: 0;
@@ -67,7 +63,6 @@
     border-left: 4px solid var(--accent-color);
   }
   
-  /* Ações */
   .acoes ul {
     list-style: none;
     padding-left: 0;
@@ -88,7 +83,6 @@
     font-style: italic;
   }
   
-  /* Botão de sair */
   .btn-sair {
     background-color: #f44336;
     color: white;
@@ -105,7 +99,6 @@
     background-color: #d32f2f;
   }
   
-  /* Responsividade simples */
   @media (max-width: 600px) {
     .painel-container {
       padding: 1rem;

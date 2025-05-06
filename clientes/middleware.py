@@ -12,7 +12,6 @@ class ClienteSessionMiddleware:
     def __call__(self, request):
         path = request.path
 
-        # 🛑 Só age se for rota do frontend
         if not path.startswith('/admin') and not path.startswith('/static'):
 
             user = getattr(request, 'user', None)

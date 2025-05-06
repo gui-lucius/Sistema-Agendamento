@@ -1,12 +1,15 @@
-# Ignorar a pasta virtual environment
-venv/
-
-# Ignorar arquivos do sistema
-*.log
+# Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+*.sqlite3
 
-# Ignorar arquivos de cache do Django
+# VSCode
+.vscode/
+
+# Django
 db.sqlite3
-
-# Ignore banco de dados duplicado
-barbearia/db.sqlite3
+/staticfiles/

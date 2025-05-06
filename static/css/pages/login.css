@@ -5,13 +5,12 @@
   padding: 60px 50px;
   max-width: 520px;
   width: 100%;
-  margin: 4rem auto; /* Centraliza horizontalmente e dá espaçamento */
+  margin: 4rem auto; 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   text-align: center;
   transition: all 0.3s ease;
 }
 
-/* Torna o form mais bonito e uniforme */
 .login-box input[type="text"],
 .login-box input[type="password"] {
   width: 100%;
@@ -24,9 +23,6 @@
   box-sizing: border-box;
 }
 
-/* Estilização do botão já deve vir do _buttons.css */
-
-/* Textos menores */
 .login-box p {
   margin: 12px 0 0;
   font-size: 0.95rem;
@@ -43,7 +39,6 @@
   color: #e09f00;
 }
 
-/* Responsivo */
 @media (max-width: 600px) {
   .login-box {
     margin: 2rem 1rem;

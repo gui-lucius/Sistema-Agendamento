@@ -1,9 +1,6 @@
-/* ============================
-   Seção: Serviços
-============================ */
 .services {
   padding: 3rem 0;
-  margin-bottom: 3rem; /* ✅ respiro depois da seção */
+  margin-bottom: 3rem; 
   text-align: center;
   background-color: #1b1b1b;
 }
@@ -52,12 +49,9 @@
   color: var(--secondary-text);
 }
 
-/* ============================
-   Seção: Sobre Nós
-============================ */
 .about {
   padding: 3rem 1rem;
-  margin-bottom: 3rem; /* ✅ respiro depois da seção */
+  margin-bottom: 3rem; 
   text-align: center;
   background-color: #212121;
 }
@@ -75,12 +69,9 @@
   margin: 0 auto;
 }
 
-/* ============================
-   Seção: Preços
-============================ */
 .pricing {
   padding: 3rem 1rem;
-  margin-bottom: 3rem; /* ✅ respiro antes do footer */
+  margin-bottom: 3rem; 
   text-align: center;
   background-color: #111;
 }
@@ -126,7 +117,6 @@
   font-weight: bold;
 }
 
-/* 📱 Responsivo */
 @media (max-width: 600px) {
   .services h2,
   .about h2,
