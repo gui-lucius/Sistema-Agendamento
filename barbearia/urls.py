@@ -37,6 +37,7 @@ urlpatterns = [
     path('senha/alterar/', auth_views.PasswordChangeView.as_view(template_name='alterar_senha.html'), name='password_change'),
     path('senha/alterar/sucesso/', auth_views.PasswordChangeDoneView.as_view(template_name='alterar_sucesso.html'), name='password_change_done'),
 
+    path('bot/', include('botwhatsapp.urls'))
 ]
 
 if settings.DEBUG:
