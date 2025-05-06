@@ -3,14 +3,15 @@ from uuid import UUID
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect  # <-- Aqui está o fix
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from clientes.models import Cliente  # <-- Model Cliente
+from clientes.models import Cliente
 
 from agendamentos.core.models import (
     Barbeiro,
@@ -19,18 +20,20 @@ from agendamentos.core.models import (
     Agendamento,
 )
 
+
 def home(request):
     return render(request, 'agendamentos/index.html')
+
 
 @login_required(login_url='agendamentos:login')
 def listar_barbeiros(request):
     barbeiros = Barbeiro.objects.all()
     return render(request, 'agendamentos/barbeiros.html', {'barbeiros': barbeiros})
 
+
 @login_required(login_url='agendamentos:login')
 def calendario_com_token(request, barbeiro_id):
     barbeiro = get_object_or_404(Barbeiro, id=barbeiro_id)
-
     try:
         cliente = Cliente.objects.get(user=request.user)
         refresh = RefreshToken.for_user(barbeiro.usuario)
@@ -55,6 +58,7 @@ def calendario_com_token(request, barbeiro_id):
         print(f"[ERRO GERAL] {e}")
         return JsonResponse({"erro": f"Erro ao gerar token ou buscar cliente: {str(e)}"}, status=500)
 
+
 @api_view(['GET'])
 def horarios_ocupados(request, barbeiro_id):
     try:
@@ -63,7 +67,6 @@ def horarios_ocupados(request, barbeiro_id):
             barbeiro=barbeiro,
             status__in=['pendente', 'aceito']
         )
-
         eventos = [{
             "data_horario_reserva": ag.data_horario_reserva.isoformat(),
             "status": ag.status
@@ -74,6 +77,7 @@ def horarios_ocupados(request, barbeiro_id):
     except Exception as e:
         print(f"[ERRO] Falha ao buscar horários ocupados: {e}")
         return Response({'erro': 'Erro ao buscar horários ocupados.'}, status=500)
+
 
 @api_view(['GET'])
 def horarios_bloqueados(request, barbeiro_id):
@@ -101,6 +105,7 @@ def horarios_bloqueados(request, barbeiro_id):
     except Exception as e:
         print(f"[ERRO] Falha ao buscar bloqueios: {e}")
         return Response({'erro': 'Erro ao buscar bloqueios.'}, status=500)
+
 
 @csrf_exempt
 def cancelar_agendamento(request, agendamento_id, token):
@@ -139,3 +144,19 @@ def cancelar_agendamento(request, agendamento_id, token):
         return render(request, 'cancelamentos/cancelamento_confirmado.html')
 
     return render(request, 'cancelamentos/confirmar_cancelamento.html', {'agendamento': agendamento})
+
+
+@login_required
+def redirecionar_pos_login(request):
+    user = request.user
+
+    if user.is_superuser:
+        return redirect('/admin/')  # segurança extra: garante que vá pro painel certo
+
+    elif user.groups.filter(name__in=['Colaborador', 'Dono']).exists():
+        return redirect('admin:index')  # painel admin via Django
+
+    elif user.groups.filter(name='Cliente').exists():
+        return redirect('agendamentos:painel_cliente')  # painel personalizado do cliente
+
+    return redirect('agendamentos:home')  # fallback geral

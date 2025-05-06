@@ -22,6 +22,7 @@ from .views import (
     painel_cliente,
     editar_cliente,
     editar_perfil_cliente,
+    redirecionar_pos_login  # ✅ import novo
 )
 
 app_name = 'agendamentos'
@@ -69,4 +70,7 @@ urlpatterns = [
     path('senha/alterar/sucesso/', PasswordChangeDoneView.as_view(
         template_name="auth/alterar_senha_done.html"
     ), name='password_change_done'),
+
+    # ✅ novo path para redirecionamento pós-login
+    path('redirecionar/', redirecionar_pos_login, name='redirecionar'),
 ]

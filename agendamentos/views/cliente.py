@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User, Group
 from clientes.decorators import cliente_required
 from agendamentos.forms.cliente import ClienteForm
 from clientes.models import Cliente
@@ -12,12 +12,14 @@ def cliente_login_view(request):
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
 
-        if user and user.groups.filter(name="Cliente").exists():
+        if user:
             login(request, user)
-            return redirect("agendamentos:home")
-        messages.error(request, "Usuário ou senha inválidos ou não autorizado.")
+            return redirect("agendamentos:redirecionar")  # ✅ usa o roteador de grupo
+        else:
+            messages.error(request, "Usuário ou senha inválidos.")
 
     return render(request, "agendamentos/login.html")
+
 
 def cadastro_view(request):
     if request.method == "POST":

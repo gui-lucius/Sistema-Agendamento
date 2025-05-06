@@ -110,9 +110,12 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/admin/login/'
+# ✅ Redirecionamento consistente e estável para admin e app
+LOGIN_URL = 'admin:login'               # admin usa a tela padrão
+LOGIN_REDIRECT_URL = '/admin/'          # pós-login volta pro admin direto
+LOGOUT_REDIRECT_URL = '/admin/login/'   # pós-logout volta pro login do admin
 
+# Configurações do sistema
 NOME_NEGOCIO = os.getenv('NOME_NEGOCIO', 'Barbearia RD')
 EMAIL_REMETENTE = EMAIL_HOST_USER
 EMAIL_DESTINO = 'guisantosschutz2@gmail.com'
