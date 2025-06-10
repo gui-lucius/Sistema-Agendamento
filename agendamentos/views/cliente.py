@@ -5,6 +5,10 @@ from django.contrib.auth.models import User, Group
 from clientes.decorators import cliente_required
 from agendamentos.forms.cliente import ClienteForm
 from clientes.models import Cliente
+from agendamentos.core.models import Agendamento
+from datetime import date, timedelta
+from django.utils.timezone import now
+from django.db.models import Q
 
 def cliente_login_view(request):
     if request.method == "POST":
@@ -19,7 +23,6 @@ def cliente_login_view(request):
             messages.error(request, "Usuário ou senha inválidos.")
 
     return render(request, "agendamentos/login.html")
-
 
 def cadastro_view(request):
     if request.method == "POST":
@@ -66,7 +69,6 @@ def cadastro_view(request):
 
     return render(request, "agendamentos/cadastro.html")
 
-
 @cliente_required
 def painel_cliente(request):
     cliente, _ = Cliente.objects.get_or_create(
@@ -74,11 +76,27 @@ def painel_cliente(request):
         defaults={'nome': request.user.first_name}
     )
 
+    hoje = date.today()
+    inicio_semana = hoje
+    fim_semana = hoje + timedelta(days=6)
+
+    # ✅ Aqui é a correção principal: request.user no lugar de request.user.cliente
+    agendamentos = Agendamento.objects.filter(
+        cliente=request.user,
+        data_horario_reserva__date__range=(inicio_semana, fim_semana)
+    ).order_by('data_horario_reserva')
+
+    agendamentos_passados = Agendamento.objects.filter(
+        cliente=request.user,
+        data_horario_reserva__date__lt=hoje
+    ).order_by('-data_horario_reserva')
+
     return render(request, 'agendamentos/painel_cliente.html', {
         'user': request.user,
-        'cliente': cliente
+        'cliente': cliente,
+        'agendamentos': agendamentos,
+        'agendamentos_passados': agendamentos_passados
     })
-
 
 @cliente_required
 def editar_cliente(request):
@@ -101,6 +119,8 @@ def editar_cliente(request):
 
     return render(request, 'agendamentos/editar_cliente.html', {'user': user})
 
+import os
+from django.conf import settings
 
 @cliente_required
 def editar_perfil_cliente(request):
@@ -110,6 +130,25 @@ def editar_perfil_cliente(request):
     )
 
     if request.method == 'POST':
+        # 🔥 Lógica de exclusão da foto
+        if 'excluir_foto' in request.POST:
+            if cliente.foto:
+                # Remove o arquivo da pasta, se existir
+                caminho = cliente.foto.path
+                if os.path.exists(caminho):
+                    os.remove(caminho)
+
+                # Limpa o campo no banco
+                cliente.foto.delete(save=False)
+                cliente.foto = None
+                cliente.save()
+
+                messages.success(request, "Foto excluída com sucesso.")
+            else:
+                messages.warning(request, "Nenhuma foto para excluir.")
+            return redirect('agendamentos:editar_perfil_cliente')
+
+        # 🔄 Atualização normal do formulário
         form = ClienteForm(request.POST, request.FILES, instance=cliente)
         if form.is_valid():
             form.save()

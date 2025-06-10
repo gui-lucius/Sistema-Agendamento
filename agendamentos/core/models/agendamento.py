@@ -7,7 +7,11 @@ from uuid import uuid4
 from .barbeiro import Barbeiro
 
 class Agendamento(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    # Associações
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # opcional: barbeiro logado
+    cliente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='agendamentos_cliente', null=True, blank=True)  # ✅ cliente logado
+
+    # Dados do agendamento
     nome_cliente = models.CharField(max_length=100)
     email_cliente = models.EmailField(null=True, blank=True)
     data_horario_reserva = models.DateTimeField()
@@ -15,6 +19,7 @@ class Agendamento(models.Model):
     servico = models.CharField(max_length=100, blank=True, null=True)
     lembrete_minutos = models.PositiveIntegerField(default=60)
 
+    # Status
     STATUS_CHOICES = [
         ('pendente', 'Pendente'),
         ('aceito', 'Aceito'),

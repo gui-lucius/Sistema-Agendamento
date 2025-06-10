@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_datetime
@@ -7,10 +8,13 @@ from agendamentos.views.barbeiro import notificar_barbeiro, notificar_cliente
 from uuid import uuid4
 
 @api_view(['POST'])
-@csrf_exempt
+@permission_classes([IsAuthenticated])  # 👈 ESSENCIAL
 def criar_agendamento(request):
     print("=== DADOS RECEBIDOS ===")
     print(request.data)
+
+    print("🧪 request.user =", request.user)
+    print("🔐 Está autenticado?", request.user.is_authenticated)
 
     data = request.data
     nome = data.get('nome')
@@ -24,7 +28,7 @@ def criar_agendamento(request):
         return Response({'erro': 'Campos obrigatórios faltando.'}, status=400)
 
     barbeiro = Barbeiro.objects.get(id=barbeiro_id)
-    data_horario = parse_datetime(data_horario_str)  
+    data_horario = parse_datetime(data_horario_str)
 
     agendamento = Agendamento.objects.create(
         barbeiro=barbeiro,
@@ -34,7 +38,8 @@ def criar_agendamento(request):
         lembrete_minutos=lembrete_minutos,
         data_horario_reserva=data_horario,
         cancel_token=uuid4(),
-        status="aceito"  
+        status="aceito",
+        cliente=request.user  # ✅ agora sim está associando ao cliente correto
     )
 
     notificar_barbeiro(nome, data_horario, barbeiro, servico)

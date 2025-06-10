@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'chave-de-desenvolvimento')
 DEBUG = True
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.15.2"]
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -94,7 +94,8 @@ EMAIL_FAIL_SILENTLY = False
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # ✅ aceita o sessionid (cookie)
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # opcional
     ],
 }
 
@@ -110,10 +111,10 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# ✅ Redirecionamento consistente e estável para admin e app
-LOGIN_URL = 'admin:login'               # admin usa a tela padrão
-LOGIN_REDIRECT_URL = '/admin/'          # pós-login volta pro admin direto
-LOGOUT_REDIRECT_URL = '/admin/login/'   # pós-logout volta pro login do admin
+# ✅ Redirecionamento consistente e estável
+LOGIN_URL = 'admin:login'                        # tela de login para admin
+LOGIN_REDIRECT_URL = 'agendamentos:redirecionar' # redirecionamento dinâmico por papel
+LOGOUT_REDIRECT_URL = '/admin/login/'            # pós-logout volta pro login do admin
 
 # Configurações do sistema
 NOME_NEGOCIO = os.getenv('NOME_NEGOCIO', 'Barbearia RD')

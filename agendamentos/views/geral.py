@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -20,16 +21,13 @@ from agendamentos.core.models import (
     Agendamento,
 )
 
-
 def home(request):
     return render(request, 'agendamentos/index.html')
-
 
 @login_required(login_url='agendamentos:login')
 def listar_barbeiros(request):
     barbeiros = Barbeiro.objects.all()
     return render(request, 'agendamentos/barbeiros.html', {'barbeiros': barbeiros})
-
 
 @login_required(login_url='agendamentos:login')
 def calendario_com_token(request, barbeiro_id):
@@ -58,7 +56,6 @@ def calendario_com_token(request, barbeiro_id):
         print(f"[ERRO GERAL] {e}")
         return JsonResponse({"erro": f"Erro ao gerar token ou buscar cliente: {str(e)}"}, status=500)
 
-
 @api_view(['GET'])
 def horarios_ocupados(request, barbeiro_id):
     try:
@@ -77,7 +74,6 @@ def horarios_ocupados(request, barbeiro_id):
     except Exception as e:
         print(f"[ERRO] Falha ao buscar horários ocupados: {e}")
         return Response({'erro': 'Erro ao buscar horários ocupados.'}, status=500)
-
 
 @api_view(['GET'])
 def horarios_bloqueados(request, barbeiro_id):
@@ -105,7 +101,6 @@ def horarios_bloqueados(request, barbeiro_id):
     except Exception as e:
         print(f"[ERRO] Falha ao buscar bloqueios: {e}")
         return Response({'erro': 'Erro ao buscar bloqueios.'}, status=500)
-
 
 @csrf_exempt
 def cancelar_agendamento(request, agendamento_id, token):
@@ -145,18 +140,21 @@ def cancelar_agendamento(request, agendamento_id, token):
 
     return render(request, 'cancelamentos/confirmar_cancelamento.html', {'agendamento': agendamento})
 
-
 @login_required
 def redirecionar_pos_login(request):
     user = request.user
 
+    # 👑 Superusuário vai direto pro admin Django
     if user.is_superuser:
-        return redirect('/admin/')  # segurança extra: garante que vá pro painel certo
+        return redirect('/admin/')
 
-    elif user.groups.filter(name__in=['Colaborador', 'Dono']).exists():
-        return redirect('admin:index')  # painel admin via Django
+    # ✂️ Barbeiros ou Donos (grupo staff)
+    elif user.groups.filter(name__in=['Colaborador', 'Dono']).exists() or user.is_staff:
+        return redirect('admin:index')
 
+    # 🙋 Cliente (grupo de clientes comuns)
     elif user.groups.filter(name='Cliente').exists():
-        return redirect('agendamentos:painel_cliente')  # painel personalizado do cliente
+        return redirect('agendamentos:painel_cliente')
 
-    return redirect('agendamentos:home')  # fallback geral
+    # 🔁 Fallback (caso não caia em nenhum grupo)
+    return redirect('agendamentos:home')

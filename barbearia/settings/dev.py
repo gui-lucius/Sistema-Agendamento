@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.15.8"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.15.8", "192.168.15.2"]
 
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False

@@ -3,7 +3,6 @@ from agendamentos.core.models import Barbeiro
 def is_dono(user):
     return user.groups.filter(name='Dono').exists()
 
-
 class RestrictToOwnDataMixin:
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -23,7 +22,6 @@ class RestrictToOwnDataMixin:
 
     def has_delete_permission(self, request, obj=None):
         return self.has_change_permission(request, obj)
-
 
 def atribuir_barbeiro_automaticamente(request, obj):
     if not (request.user.is_superuser or is_dono(request.user)) and not obj.barbeiro_id:
