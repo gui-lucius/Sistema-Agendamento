@@ -1,3 +1,4 @@
+/* 🎯 TÍTULO */
 h1.titulo-calendario {
   text-align: center;
   font-size: 2.4rem;
@@ -5,6 +6,7 @@ h1.titulo-calendario {
   margin: 30px auto 20px;
 }
 
+/* 📅 CALENDÁRIO */
 #calendar {
   max-width: 1100px;
   margin: 0 auto 40px; 
@@ -17,13 +19,78 @@ h1.titulo-calendario {
   font-size: 1rem;
 }
 
+/* ✅ MENSAGEM DE CONFIRMAÇÃO */
+.confirm-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: transparent; /* remove fundo extra */
+}
+
+.confirm-box {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 320px;
+  max-width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+  text-align: center;
+}
+
+.check-icon {
+  font-size: 3rem;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+}
+
+.confirm-box h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.confirm-box p {
+  margin: 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+/* 📱 RESPONSIVIDADE */
 @media (max-width: 600px) {
   #calendar {
     padding: 15px;
     margin-bottom: 60px; 
   }
+
+  .confirm-box {
+    padding: 1.5rem;
+  }
+
+  .confirm-box h2 {
+    font-size: 1.2rem;
+  }
+
+  .confirm-box p {
+    font-size: 0.95rem;
+  }
 }
 
+/* 🔧 TOOLBAR DO CALENDÁRIO */
 .footer {
   margin-top: 40px; 
 }
@@ -101,6 +168,7 @@ h1.titulo-calendario {
   color: #fff;
 }
 
+/* 🔲 ACESSIBILIDADE */
 input:focus,
 select:focus,
 button:focus,
@@ -136,6 +204,7 @@ a:focus,
   }
 }
 
+/* 🧾 MODAL DE AGENDAMENTO */
 .multi-step-modal {
   display: none;
   justify-content: center;
@@ -238,6 +307,7 @@ a:focus,
   background-color: #c62828;
 }
 
+/* 🌀 ANIMAÇÃO */
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -246,19 +316,5 @@ a:focus,
   100% {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-@media (max-width: 600px) {
-  .modal-content {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .btn-proximo,
-  #btnReservar,
-  .btn-cancelar {
-    width: 100%;
-    margin: 10px 0;
   }
 }
