@@ -1,3 +1,4 @@
+/* 🔳 Modal de múltiplos passos */
 .multi-step-modal {
   display: none;
   position: fixed;
@@ -92,17 +93,138 @@
 }
 
 .btn-cancelar {
-  background-color: #f44336;
-  color: white;
-  margin-top: 15px;
-  padding: 10px;
-  width: 100%;
-  border-radius: 6px;
-  font-weight: bold;
+  background-color: #f44336 !important;
+  color: #fff !important;
+  padding: 10px 20px !important;
+  font-size: 1.05rem !important;
+  border-radius: 6px !important;
+  font-weight: bold !important;
+  border: none !important;
+  cursor: pointer !important;
+  width: auto !important;
+  display: inline-block !important;
+  text-align: center !important;
+  margin: 15px auto 0 auto !important;
+  transition: background 0.3s ease;
 }
 
 .btn-cancelar:hover {
-  background-color: #c62828;
+  background-color: #c62828 !important;
+  transform: scale(1.05);
+}
+
+/* 🔄 Overlay de Carregamento */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-box {
+  text-align: center;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #fff;
+  border-top-color: #d4a300;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ✅ Mensagem flutuante tipo toast */
+.toast-sucesso {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 3000;
+  font-weight: bold;
+  animation: fadeInOut 4s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+}
+
+/* ✅ Novo popup confirmacao centralizado */
+.confirm-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 3000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.confirm-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  animation: popUp 0.3s ease;
+}
+
+.check-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: bounce 0.4s ease;
+}
+
+@keyframes popUp {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0.7);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeIn {
@@ -116,6 +238,7 @@
   }
 }
 
+/* 📱 Responsivo */
 @media (max-width: 600px) {
   .modal-content {
     width: 90%;
@@ -123,9 +246,16 @@
   }
 
   .btn-proximo,
-  #btnReservar,
-  .btn-cancelar {
+  #btnReservar {
     width: 100%;
     margin: 10px 0;
+  }
+
+  .btn-cancelar {
+    margin-top: 15px;
+  }
+
+  .confirm-box {
+    width: 90%;
   }
 }

@@ -10,30 +10,24 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView
 )
 
-# Health check simples
 def health_check(request):
     return JsonResponse({"status": "ok"}, status=200)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Rotas do app principal
     path('', include('agendamentos.urls')),
 
-    # JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # Health Check
     path('health/', health_check, name='health_check'),
 
-    # Google site verification (exemplo)
     path(
         "google5e41cd1aba47309f.html",
         TemplateView.as_view(template_name="google5e41cd1aba47309f.html")
     ),
 
-    # Senhas
     path('senha/reset/', auth_views.PasswordResetView.as_view(template_name='recuperar_senha.html'), name='password_reset'),
     path('senha/reset/enviado/', auth_views.PasswordResetDoneView.as_view(template_name='reset_enviado.html'), name='password_reset_done'),
     path('senha/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='reset_confirmar.html'), name='password_reset_confirm'),
@@ -45,7 +39,6 @@ urlpatterns = [
 
 ]
 
-# Para servir arquivos estáticos e mídia em desenvolvimento
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

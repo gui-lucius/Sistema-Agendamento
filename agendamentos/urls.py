@@ -8,7 +8,6 @@ from django.contrib.auth.views import (
     PasswordChangeView,
     PasswordChangeDoneView
 )
-
 from .views import (
     home,
     listar_barbeiros,
@@ -22,9 +21,8 @@ from .views import (
     painel_cliente,
     editar_cliente,
     editar_perfil_cliente,
-    redirecionar_pos_login  # ✅ import novo
+    redirecionar_pos_login 
 )
-
 app_name = 'agendamentos'
 
 urlpatterns = [
@@ -71,6 +69,5 @@ urlpatterns = [
         template_name="auth/alterar_senha_done.html"
     ), name='password_change_done'),
 
-    # ✅ novo path para redirecionamento pós-login
     path('redirecionar/', redirecionar_pos_login, name='redirecionar'),
 ]

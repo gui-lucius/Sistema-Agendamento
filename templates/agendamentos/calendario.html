@@ -11,6 +11,20 @@
 {% block content %}
   <div id="mensagem-global" role="alert" aria-live="assertive"></div>
 
+  <!-- Mensagem flutuante (ainda útil se quiser manter) -->
+  <div id="mensagem-flutuante" class="toast-sucesso" style="display: none;">
+    ✅ Reserva realizada com sucesso!
+  </div>
+
+  <!-- Novo popup central animado -->
+  <div id="mensagem-confirmado" class="confirm-popup" style="display: none;">
+    <div class="confirm-box">
+      <div class="check-icon">✅</div>
+      <h2>Agendamento Confirmado!</h2>
+      <p>Nos vemos em breve ✂️</p>
+    </div>
+  </div>
+
   <h1 class="titulo-calendario">Calendário de Reservas</h1>
 
   <div id="calendar" data-barbeiro-id="{{ barbeiro.id }}" aria-label="Calendário de horários disponíveis"></div>
@@ -38,9 +52,10 @@
           <option value="">Selecione um serviço</option>
           <option value="Corte - R$35">Corte - R$35</option>
           <option value="Corte + Barba - R$60">Corte + Barba - R$60</option>
+          <option value="Corte + Barba - R$60">Barba - R$30</option>
+          <option value="Corte + Barba - R$60">Sobrancelha - R$10</option>
           <option value="Descoloração - R$150">Descoloração - R$150</option>
           <option value="Pigmentação - R$60">Pigmentação - R$60</option>
-          <option value="Plano Mensal - R$100">Plano Mensal - R$100</option>
         </select>
 
         <button type="button" onclick="mostrarProximoStep(3)">Próximo</button>
@@ -60,13 +75,18 @@
         <button type="button" onclick="mostrarProximoStep(2)">Voltar</button>
       </div>
 
-      <button id="cancelarModal" class="btn-cancelar">Cancelar</button>
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <button id="cancelarModal" class="btn-cancelar">Cancelar</button>
+      </div>
     </div>
   </div>
 
-  <div id="loading" role="status" aria-live="assertive" aria-label="Carregando">
-    <div class="spinner"></div>
-    <p>Aguarde, processando...</p>
+  <!-- Overlay de carregamento -->
+  <div id="loading" class="loading-overlay" style="display: none;">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p>Aguarde, processando...</p>
+    </div>
   </div>
 {% endblock %}
 

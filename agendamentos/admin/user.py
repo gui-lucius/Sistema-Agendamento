@@ -7,7 +7,6 @@ class CustomUserChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = "__all__"
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if "groups" in self.fields:
@@ -18,11 +17,9 @@ admin.site.unregister(User)
 @admin.register(User)
 class CustomUserAdmin(DefaultUserAdmin):
     form = CustomUserChangeForm
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.exclude(groups__name='Cliente')
-
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         ("Informações pessoais", {"fields": ("first_name", "last_name", "email")}),
@@ -36,14 +33,12 @@ class CustomUserAdmin(DefaultUserAdmin):
         }),
         ("Datas importantes", {"fields": ("last_login", "date_joined")}),
     )
-
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
             "fields": ("username", "password1", "password2"),
         }),
     )
-
     list_display = ("username", "email", "first_name", "last_name", "is_staff", "is_active")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
     search_fields = ("username", "email", "first_name", "last_name")

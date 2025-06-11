@@ -28,13 +28,22 @@
   <hr />
 
   <div class="meus-agendamentos">
-    <h2>📅 Meus Agendamentos</h2>
+    <h2>📅 Meus Agendamentos da Semana</h2>
     {% if agendamentos %}
       <ul class="agenda-lista">
         {% for ag in agendamentos %}
-          <li>
-            <strong>{{ ag.servico }}</strong> com <strong>{{ ag.barbeiro.nome }}</strong><br />
-            {{ ag.data_horario_reserva|date:"d/m/Y H:i" }} — <em>{{ ag.status|title }}</em>
+          <li class="agendamento-item">
+            <div class="info-agendamento">
+              <strong>{{ ag.servico }}</strong> com <strong>{{ ag.barbeiro.nome }}</strong><br />
+              {{ ag.data_horario_reserva|date:"d/m/Y H:i" }} — <em>{{ ag.status|title }}</em>
+            </div>
+
+            <a
+              href="{% url 'agendamentos:cancelar_agendamento' ag.id ag.cancel_token %}"
+              class="btn-cancelar"
+              title="Cancelar agendamento"
+            >🗑️</a>
+
           </li>
         {% endfor %}
       </ul>
@@ -43,15 +52,27 @@
     {% endif %}
   </div>
 
+  {% if agendamentos_passados %}
+    <hr />
+    <div class="agendamentos-passados">
+      <h2>📖 Agendamentos Anteriores</h2>
+      <ul class="agenda-lista">
+        {% for ag in agendamentos_passados %}
+          <li>
+            <strong>{{ ag.servico }}</strong> com <strong>{{ ag.barbeiro.nome }}</strong><br />
+            {{ ag.data_horario_reserva|date:"d/m/Y H:i" }} — <em>{{ ag.status|title }}</em>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
   <hr />
 
   <div class="acoes">
     <h2>⚙️ Ações Disponíveis</h2>
     <ul>
-      <li><a href="{% url 'agendamentos:editar_perfil_cliente' %}">Editar dados (nome, telefone, foto)</a></li>
       <li><a href="{% url 'password_change' %}">Alterar senha</a></li>
-      <li><span class="futuro">Histórico de cortes (em breve)</span></li>
-      <li><span class="futuro">Sistema de fidelidade (em breve)</span></li>
     </ul>
   </div>
 

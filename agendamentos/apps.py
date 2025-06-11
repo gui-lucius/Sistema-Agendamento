@@ -7,4 +7,4 @@ class AgendamentosConfig(AppConfig):
     verbose_name = 'Gestão de Agendamentos'
 
     def ready(self):
-        importlib.import_module('agendamentos.core.utils.signals')
+        importlib.import_module('agendamentos.core.utils')
