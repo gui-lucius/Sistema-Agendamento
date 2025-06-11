@@ -1,4 +1,3 @@
-/* 🎯 TÍTULO */
 h1.titulo-calendario {
   text-align: center;
   font-size: 2.4rem;
@@ -6,7 +5,6 @@ h1.titulo-calendario {
   margin: 30px auto 20px;
 }
 
-/* 📅 CALENDÁRIO */
 #calendar {
   max-width: 1100px;
   margin: 0 auto 40px; 
@@ -19,7 +17,6 @@ h1.titulo-calendario {
   font-size: 1rem;
 }
 
-/* ✅ MENSAGEM DE CONFIRMAÇÃO */
 .confirm-popup {
   position: fixed;
   top: 50%;
@@ -31,7 +28,7 @@ h1.titulo-calendario {
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: transparent; /* remove fundo extra */
+  background: transparent; 
 }
 
 .confirm-box {
@@ -70,7 +67,6 @@ h1.titulo-calendario {
   color: #666;
 }
 
-/* 📱 RESPONSIVIDADE */
 @media (max-width: 600px) {
   #calendar {
     padding: 15px;
@@ -90,7 +86,6 @@ h1.titulo-calendario {
   }
 }
 
-/* 🔧 TOOLBAR DO CALENDÁRIO */
 .footer {
   margin-top: 40px; 
 }
@@ -168,7 +163,6 @@ h1.titulo-calendario {
   color: #fff;
 }
 
-/* 🔲 ACESSIBILIDADE */
 input:focus,
 select:focus,
 button:focus,
@@ -204,7 +198,6 @@ a:focus,
   }
 }
 
-/* 🧾 MODAL DE AGENDAMENTO */
 .multi-step-modal {
   display: none;
   justify-content: center;
@@ -307,7 +300,6 @@ a:focus,
   background-color: #c62828;
 }
 
-/* 🌀 ANIMAÇÃO */
 @keyframes fadeIn {
   0% {
     opacity: 0;
