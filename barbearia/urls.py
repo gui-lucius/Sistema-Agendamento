@@ -39,6 +39,15 @@ urlpatterns = [
 
 ]
 
+from django.contrib.auth.models import User
+
+def cria_superuser():
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
+        print('Superusuário criado!')
+
+cria_superuser()
+
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
