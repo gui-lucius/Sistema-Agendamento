@@ -12,7 +12,10 @@ from django.utils.timezone import make_aware
 from datetime import datetime, timedelta, time
 import locale
 
-locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+try:
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+except locale.Error:
+    locale.setlocale(locale.LC_TIME, 'C')
 
 def normalizar_texto(texto):
     texto = texto.lower().strip()
