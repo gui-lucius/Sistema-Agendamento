@@ -5,7 +5,8 @@ DEBUG = False
 ALLOWED_HOSTS = [
     "barbearia-rd.com.br",
     "www.barbearia-rd.com.br",
-    "barbearia-rd-a3b518df45e1.herokuapp.com"
+    "barbearia-rd-a3b518df45e1.herokuapp.com",
+    'web-production-79ac1.up.railway.app'
 ]
 
 SECURE_SSL_REDIRECT = True
