@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'chave-de-desenvolvimento')
 DEBUG = True
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.15.2, www.barbearia-rd.com.br"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.15.2", "www.barbearia-rd.com.br", "web-production-79ac1.up.railway.app"]
 
 INSTALLED_APPS = [
     'jazzmin',
